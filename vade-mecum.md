@@ -298,3 +298,15 @@ fix: handle empty form submission
 - ❌ `WIP` → "Work In Progress", à éviter en main (OK en branche perso)
 - ❌ `commit` → pléonasme
 - ❌ Verbes au passé : `added`, `fixed`, `updated`
+
+### .gitignore
+
+- .gitignore est un fichier qui dit à Git "ne suis _JAMAIS_ ces fichiers - ils n'ont pas leur place dans l'historique".
+
+## fichiers .gitignore
+
+- fichiers **système** générés par l'OS : .DS_Store(macOS), Thumbs.db(Windows)
+- fichiers **secrets** : .env, mots de passe en dur
+- fichiers **temporaires** ou de **cache** : _.log, _.tmp
+- **dépendances générées** : node.modules/, vendor/
+- fichiers **d'éditeurs** : .vscode/, .idea/

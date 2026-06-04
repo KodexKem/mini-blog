@@ -36,11 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </fieldset>
     </form>
     <?php 
-        if ($articleSoumis === true) {
-            echo "<p>Article soumis !</p>";
-            echo "<h2>" . htmlspecialchars($articleTitre) . "</h2>";
-            echo "<p>" . htmlspecialchars($articleContenu) . "</p>";
-        }
+if ($articleSoumis === true && !empty($articleTitre) && !empty($articleContenu)) {
+        echo "<p>Article soumis !</p>";
+        echo "<h2>" . htmlspecialchars($articleTitre) . "</h2>";
+        echo "<p>" . htmlspecialchars($articleContenu) . "</p>";
+    } elseif ($articleSoumis === true) {
+        echo "<p>Veuillez remplir tous les champs.</p>";
+    }
     ?>
 </body> 
 </html>
