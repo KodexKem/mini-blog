@@ -135,8 +135,8 @@
 - Les opérateurs de comparaison : tu en as vu 4-5 aujourd'hui (===, >=, etc.)
   == simple comparaison
   === comparaison stricte
-  > = supérieur ou égal
-  > <= inférieur ou égal
+  ≥ supérieur ou égal
+  ≤ inférieur ou égal
 - PHP est sans état (stateless) : que se passe-t-il aux données $\_POST quand le script PHP termine son exécution ? (très important, c'est un concept fondamental) : elles disparaissent
 - La différence entre '...' et "..." pour afficher une variable dans un echo (l'interpolation, on l'avait revue ce matin) : '...' affiche du texte brut
 - Le comportement Cmd+R vs Entrée dans la barre d'adresse après un POST (subtilité que tu as observée) :
@@ -310,3 +310,61 @@ fix: handle empty form submission
 - fichiers **temporaires** ou de **cache** : _.log, _.tmp
 - **dépendances générées** : node.modules/, vendor/
 - fichiers **d'éditeurs** : .vscode/, .idea/
+
+### 🎯 Exercices réalisés
+
+- initialisation Git avec la commande git init pour initialiser un repo local
+- création du fichier .gitignore : configuration des fichiers ignorés lors d'un push => fichiers système, secrets, temporaires, éditeur, dépendances
+- git status : pour savoir où on en est dans le repo
+- git add . : pour ajouter tous les fichiers du dossier au repo
+- premier commit : construction **préfixe: impératif(ex : add) -m "message du commit (≤ à 72 caractères, idéal 50)"**
+- git push
+
+### 🛠️ Réflexes acquis
+
+- utiliser **-m** pour les commits, choisir les préfixe, 1 modif = 1 commit, bien formuler le message
+
+### ⚠️ Pièges où je me suis pris
+
+- ne pas oublier les guillemets entourant le message du commit
+- attention à l'orthographe ! (se relire)
+- bien choisir les préfixes des commit
+- les commits doivent décrire précisément ce qu'ils font
+
+### 🎓 Questions soutenance type
+
+- où se font les commandes pour Git ? : dans le Terminal
+- comment initier un repo Git ? : avec la commande git init
+- quelle est la différence entre les préfixes feat: et chore: ? : feat: et pour l'ajout de fonctionnalités visibles, chore: pour la maintenance, gitignore...
+
+## Session 5 - 2026-06-04
+
+### 🎯 Exercices réalisés
+
+- découverte de la fonction empty() : sert à tester si une variable est vide
+- découverte de l'opérateur &&(ET logique)pour "additionner" les conditions d'une variable
+- découverte de la fonction elseif (sinon si) : ajoute une condition à l'exécution d'une variable
+- second commit
+
+### 🛠️ Réflexes acquis
+
+- ne pas permettre qu'un formulaire vide soit soumis grâce à empty()
+- ajouter autant de conditions que nécessaire
+
+### 🧠 Concepts ancrés
+
+- fonction empty(), qui retourne **true** si une variable est vide. !empty(), elle, retourne : (fonction) n'est PAS vide
+- l'opérateur &&(ET logique) permets d'additionner les conditions d'une fonction
+- elseif(sinon si) permet d'ajouter une condition si le if est faux
+- else quant à elle s'exécute si aucune condition au-dessus n'est exécutée
+
+### ⚠️ Pièges où je me suis pris
+
+- oublie de parenthèse : il doit y avoir autant de parenthèses ouvrantes que fermantes
+- je ne sais pas encore déterminer le bon préfixe des commits
+- déterminer la bonne formulation des commits
+
+### 🎓 Questions soutenance type
+
+- à quoi sert la fonction **empty()** ? : elle teste si une variable est vide
+- combien d'opérateurs && (ET logique) peut-on utiliser dans une condition ? : autant que nécessaire
