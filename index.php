@@ -9,7 +9,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $articleTitre = $_POST['titre'];
     $articleContenu = $_POST['contenu'];
 }
-    ?>
+
+$articles = [
+    [
+        "titre" => "Le premier article",
+        "contenu" => "Ici apparaîtra un article cool"
+    ],
+    [
+        "titre" => "Le second article",
+        "contenu" => "..."
+    ],
+    [
+        "titre" => "Le troisième article",
+        "contenu" => "..."
+    ]
+];
+?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -25,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </h1>
     <p><?php echo "Par " . $auteur; ?></p>
 
-    <form method="post" action="">
+    <form method="post" action="" id="form">
         <fieldset>
             <legend>Mon 1er article</legend>
         <label for="titre">Titre de l'article</label>
@@ -43,6 +58,17 @@ if ($articleSoumis === true && !empty($articleTitre) && !empty($articleContenu))
     } elseif ($articleSoumis === true) {
         echo "<p>Veuillez remplir tous les champs.</p>";
     }
-    ?>
+?>
+    <section>
+        <h1>Articles publiés</h1>
+        <?php
+        foreach ($articles as $article) {
+            echo "<article>";
+            echo "<h2>" . htmlspecialchars($article["titre"]) . "</h2>";  // titre sécurisé
+            echo "<p>" . htmlspecialchars($article["contenu"]) . "</p>";    // contenu sécurisé
+            echo "</article>";
+        }
+        ?>
+    </section>
 </body> 
 </html>
