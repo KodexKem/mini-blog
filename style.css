@@ -1,0 +1,29 @@
+body {
+  display: grid;
+  place-items: center;
+  background-image: url(BG.png);
+  color: antiquewhite;
+}
+
+title {
+  font-style: italic;
+}
+
+fieldset {
+  display: grid;
+  place-items: center;
+  height: 30dvh;
+  width: 30dvw;
+  gap: 1px;
+}
+
+button {
+  width: 5dvw;
+  height: 5dvh;
+}
+
+#contenu {
+  width: 20dvw;
+  height: 10dvh;
+  background-color: bisque;
+}
