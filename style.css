@@ -1,29 +1,97 @@
+header {
+  height: 12dvh;
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  place-items: center;
+}
+header #div1 {
+  height: 12dvh;
+  display: flex;
+  place-items: center;
+}
+
+div img {
+  height: 6dvh;
+  border: none;
+  filter: opacity(25%);
+}
+
+header #div2 {
+  height: 12dvh;
+  display: flex;
+  flex-direction: row;
+}
+
+li {
+  display: inline-block;
+  padding: 3px;
+}
+
+#nav {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
 body {
   display: grid;
   place-items: center;
+  text-align: center;
   background-image: url(BG.png);
   color: antiquewhite;
 }
 
-title {
+h1 {
+  font-style: oblique;
+  font-size: 2rem;
+}
+
+#auteur {
+  color: rgb(206, 89, 98);
   font-style: italic;
 }
 
 fieldset {
   display: grid;
   place-items: center;
-  height: 30dvh;
-  width: 30dvw;
-  gap: 1px;
+  height: 67.5dvh;
+  width: 80dvw;
 }
 
-button {
-  width: 5dvw;
-  height: 5dvh;
+#titre {
+  border: 1mm groove rgb(206, 89, 98);
+  color: antiquewhite;
+  font-size: large;
+  border-radius: 10px;
+  width: 20dvw;
+  height: 2dvh;
+  background-color: gray;
 }
 
 #contenu {
-  width: 20dvw;
-  height: 10dvh;
-  background-color: bisque;
+  background-color: rgba(115, 128, 134);
+  border-radius: 10px;
+  border: 1mm groove rgb(206, 89, 98);
+  font-size: large;
+  width: 80dvw;
+  height: 4dvh;
+}
+
+button {
+  background-color: gray;
+  border: 1mm groove rgb(206, 89, 98);
+  border-radius: 10px;
+  width: 14dvw;
+  height: 3dvh;
+}
+
+section {
+  display: grid;
+  place-items: center;
+}
+
+footer {
+  height: 3dvh;
+  background-color: aliceblue;
 }
