@@ -10,7 +10,12 @@
 ## 📚 Sommaire des sessions
 
 1. [Session 1 — 2026-05-21 : HTML/PHP de base, variables, concaténation](#session-1--2026-05-21)
-2. _(à venir)_
+2. [Session 2 — 2026-06-02 : Formulaires + `$_POST`](#session-2--2026-06-02)
+3. [Session 3 — 2026-06-03 matin : truthy/falsy + XSS](#session-3---2026-06-03---matin)
+4. [Session 4 — 2026-06-03 après-midi : Git + Conventional Commits](#session-4---2026-06-03---après-midi)
+5. [Session 5 — 2026-06-04 : `empty()`, `&&`, `elseif`](#session-5---2026-06-04)
+6. [Session 6 — 2026-06-08 : Tableaux PHP + `foreach`](#session-6---2026-06-08)
+7. _(à venir — stockage en fichier JSON)_
 
 ---
 
@@ -120,58 +125,61 @@
 
 ### 🎯 Exercices réalisés
 
-- Construction d'un formulaire avec <form> (formulaire), <fieldset>(cadre), <legend>(légende), <input type="text">, <label for="">, <textarea name="">, <button type="submit">
-- détecter un POST côté PHP
-- récupérer les données POST et les afficher
+- Construction d'un formulaire avec `<form>` (formulaire), `<fieldset>` (cadre), `<legend>` (légende), `<input type="text">`, `<label for="">`, `<textarea name="">`, `<button type="submit">`
+- Détecter un POST côté PHP
+- Récupérer les données POST et les afficher
 
 ### 🧠 Concepts ancrés
 
-- correspondance des **for=""** et **id=""** : permet "d'envoyer" automatiquement le curseur dans le champ lorsque l'on clique sur le texte
-- les **for=""** des <label> doivent correspondre au **id=""** des <input> ou <textarea>
-- les <label> doivent décrire ce qui est attendu et être renseignés **AVANT** le champ
-- Comment ton PHP a-t-il su qu'un formulaire avait été soumis ? : PHP vérifie $\_SERVER['REQUEST_METHOD'] === 'POST' dans une condition. Si vrai, c'est que le formulaire a été soumis en POST
-- Comment as-tu récupéré le titre tapé par l'utilisateur ? : $articleTitre = $\_POST['titre'];
-- Pourquoi tu as utilisé un if à la fin du body ? À quoi sert un if en général ? : pour obtenir les résultats sous le formulaire - à instruire une condition
-- Les opérateurs de comparaison : tu en as vu 4-5 aujourd'hui (===, >=, etc.)
-  == simple comparaison
-  === comparaison stricte
-  ≥ supérieur ou égal
-  ≤ inférieur ou égal
-- PHP est sans état (stateless) : que se passe-t-il aux données $\_POST quand le script PHP termine son exécution ? (très important, c'est un concept fondamental) : elles disparaissent
-- La différence entre '...' et "..." pour afficher une variable dans un echo (l'interpolation, on l'avait revue ce matin) : '...' affiche du texte brut
-- Le comportement Cmd+R vs Entrée dans la barre d'adresse après un POST (subtilité que tu as observée) :
-  Cmd + R : recharge la page avec le derniers résultat POST
-  Entrée dans la barre d'adresse : recharge tout
+- Correspondance des **`for=""`** et **`id=""`** : permet "d'envoyer" automatiquement le curseur dans le champ lorsque l'on clique sur le texte du label
+- Les **`for=""`** des `<label>` doivent correspondre aux **`id=""`** des `<input>` ou `<textarea>`
+- Les `<label>` doivent décrire ce qui est attendu et être renseignés **AVANT** le champ
+- **Comment PHP sait-il qu'un formulaire a été soumis ?** → PHP vérifie `$_SERVER['REQUEST_METHOD'] === 'POST'` dans une condition. Si vrai, c'est que le formulaire a été soumis en POST
+- **Comment récupérer le titre tapé par l'utilisateur ?** → `$articleTitre = $_POST['titre'];`
+- **Pourquoi utiliser un `if` à la fin du body ?** → Pour afficher les résultats sous le formulaire **uniquement quand il a été soumis**. Le `if` sert à exécuter du code conditionnellement.
+- **Opérateurs de comparaison vus aujourd'hui** :
+  - `==` comparaison souple (compare les valeurs, ignore les types)
+  - `===` comparaison stricte (compare valeurs **ET** types)
+  - `>=` supérieur ou égal
+  - `<=` inférieur ou égal
+- **PHP est sans état (stateless)** ⚠️ FONDAMENTAL : quand le script PHP termine son exécution, les `$_POST` et toutes les variables **disparaissent** de la mémoire. Au prochain rechargement, PHP repart de zéro.
+- **Interpolation `'...'` vs `"..."`** (rappel session 1) : `'...'` affiche le texte brut, `"..."` remplace les `$variables` par leur valeur
+- **Cmd+R vs Entrée dans la barre d'adresse après un POST** :
+  - **Cmd + R** : recharge la page **en réémettant la requête POST** (le navigateur réenvoie les données)
+  - **Entrée dans la barre d'adresse** : recharge la page en **GET** (les données POST disparaissent)
 
 ### 🛠️ Réflexes acquis
 
-- ne pas hésiter à demander de l'aide, mais surtout pas les réponses
+- Ne pas hésiter à demander de l'aide, mais surtout pas les réponses
+- Vérifier la correspondance `for=""` / `id=""` à chaque ajout de champ
 
 ### ⚠️ Pièges où je me suis pris
 
-- j'ai répondu "$\_POST" en début de session car je ne savais pas récupérer les infos nécessaires dans ma mémoire
-- les apostrophes dans "$\_POST['titre'] sont obligatoire sans quoi le texte brut sera affiché
-- 1 seul **if** suffit car les 3 instructions doivent répondre à la même condition
-- **=** n'est pas une comparaison mais une affectation
+- J'ai répondu "`$_POST`" en début de session car je ne savais pas récupérer les infos nécessaires dans ma mémoire
+- Les apostrophes dans `$_POST['titre']` sont **obligatoires**, sans quoi PHP cherche une constante `titre` et affiche un warning
+- 1 seul **`if`** suffit car les 3 instructions doivent répondre à la même condition
+- **`=`** n'est pas une comparaison mais une affectation
 
 ### 🎓 Questions soutenance type
 
-- comment construire un formulaire ? : avec la balise <form>
-- comment débuter un fichier .php ? : avec la balise <?php ?>
-- comment est construite la fonction "if" ? : if (conditions) {instructions}
-- comment PHP sait-il qu'un formulaire a été soumis ? : PHP vérifie $\_SERVER['REQUEST_METHOD'] === 'POST' dans une condition. Si vrai, c'est que le formulaire a été soumis en POST
-- comment récupère-t-on les données d'un champ texte côté serveur ? : en HTML : grâce à l'attribut **name=""**, en PHP : grâce à $\_POST['nom_du_champ']
-- Pourquoi PHP affiche-t-il **$articleTitre** même si on a rien tapé dans le formulaire ? : il affiche un champ vide, un blanc, pas réellement rien, \*$\_POST['titre'] vaut la chaîne vide **""**
+- _"Comment construire un formulaire ?"_ → Avec la balise `<form>` contenant des `<input>` et un `<button type="submit">`
+- _"Comment débuter un fichier `.php` ?"_ → Avec la balise d'ouverture `<?php`
+- _"Comment est construite la structure `if` ?"_ → `if (condition) { instructions }`
+- _"Comment PHP sait-il qu'un formulaire a été soumis ?"_ → PHP vérifie `$_SERVER['REQUEST_METHOD'] === 'POST'` dans une condition. Si vrai, c'est que le formulaire a été soumis en POST.
+- _"Comment récupère-t-on les données d'un champ texte côté serveur ?"_ → En HTML : grâce à l'attribut `name=""`. En PHP : grâce à `$_POST['nom_du_champ']`.
+- _"Pourquoi PHP affiche-t-il `$articleTitre` même si on n'a rien tapé dans le formulaire ?"_ → Il affiche un champ vide, pas réellement rien : `$_POST['titre']` vaut la chaîne vide `""`, et `""` affiché ne produit rien de visible.
+
+---
 
 ## Session 3 - 2026-06-03 - matin
 
 ### 🎯 Exercices réalisés
 
-# truthy et falsy
+#### Truthy et falsy
 
 ```php
 <?php
-$valeur = ___ ;   // remplace par "" (chaîne vide)
+$valeur = ___ ;   // remplacer par différentes valeurs
 
 if ($valeur) {
     echo "C'est truthy";
@@ -179,74 +187,76 @@ if ($valeur) {
     echo "C'est falsy";
 }
 ?>
-
 ```
 
-- remplacer **\_\_\_** par des valeurs **égales à rien** et **égales à quelque chose** :
+Tableau des résultats observés :
 
-remplacer **$valeur** par :
+| Valeur de `$valeur`     | Résultat |
+| ----------------------- | -------- |
+| `""` (chaîne vide)      | falsy    |
+| `"hello"` (chaîne pleine) | truthy |
+| `0` (entier zéro)       | falsy    |
+| `42` (entier non zéro)  | truthy   |
+| `null`                  | falsy    |
 
-      - "" (chaîne vide) => falsy
-      - "hello" (chaîne non vide) => truthy
-      - 0 (entier zéro) => falsy
-      - 42 (entier non zéro) => truthy
-      - null => falsy
+➝ Les valeurs **"vides" ou "nulles"** (`""`, `0`, `null`, `false`, `[]`) sont considérées **falsy** par PHP dans un `if`. Le bloc ne s'exécute pas.
 
-# les valeurs **égales à rien** empêchent l'exécution du code et renvoie une chaîne vide, elles sont donc **falsy** (false)
+#### Faille XSS (Cross-Site Scripting) — Échappement HTML
 
-# faille XSS (cross-Site Scripting) - Échappement HTML
+Pour se protéger des **hackers**, on utilise la fonction **`htmlspecialchars()`** sur tout texte venant de l'utilisateur avant de l'afficher.
 
-- afin de se protéger des **hackers**, il existe la commande **htmlspecialchars()**, utilisée dans les champs des formulaires.
-  exemple :
+Exemple :
 
 ```php
 echo "<h2>" . htmlspecialchars($articleTitre) . "</h2>";
-
 ```
 
-l'interpolation **"$truc"** ne fonctionne pas ici, il faut utiliser la concaténation **.**
+⚠️ L'interpolation `"$truc"` ne fonctionne **pas** ici : on doit utiliser la concaténation `.` car l'interpolation ne sait pas exécuter une fonction.
 
-- cette commande permet de modifier les caractères :
-  **<** devient &lt;
-  **>** devient &gt;
-  **"** devient &quot;
-  **'** devient &#039;
-  **&** devient &amp;
+Caractères transformés par `htmlspecialchars()` :
+
+| Caractère original | Devient   |
+| ------------------ | --------- |
+| `<`                | `&lt;`    |
+| `>`                | `&gt;`    |
+| `"`                | `&quot;`  |
+| `'`                | `&#039;`  |
+| `&`                | `&amp;`   |
 
 ### 🧠 Concepts ancrés
 
-- des _$valeur_ égales à rien telles que 0(zéro entier), null ou ""(chaînes vide) retournent des chaînes d'affichage vides **falsy**
-
-- pour protéger les formulaires, on utilise _htmlspecialchars()_ pour utiliser l'échappement HTML
-
-- pour la fonction _htmlspecialchars_, on utilise la concaténation "." au lieu de l'interpolation "$truc" car cette dernière ne fonctionne QUE pour les variables simples, elle ne sait PAS exécuter une fonction.
+- Les valeurs falsy en PHP : `""`, `0`, `null`, `false`, `[]` — dans un `if`, le bloc ne s'exécute pas
+- Pour protéger les formulaires contre le XSS, on utilise `htmlspecialchars()` avant tout affichage de données utilisateur
+- Pour `htmlspecialchars()`, on utilise la **concaténation `.`** au lieu de l'interpolation `"$truc"` car l'interpolation ne sait QUE remplacer une variable simple, pas exécuter une fonction
 
 ### 🛠️ Réflexes acquis
 
-- se protéger des hackers dans les formulaires
-- dans une condition, une chaîne vide est considérée comme _falsy_, le _if_ ne s'exécute donc pas
+- Se protéger des hackers dans les formulaires : **toute donnée utilisateur affichée passe par `htmlspecialchars()`**
+- Dans une condition, une chaîne vide est considérée comme _falsy_, le `if` ne s'exécute donc pas
 
 ### ⚠️ Pièges où je me suis pris
 
-- pour récupérer une donnée, on utilise $\_POST['contenu']
-- si une valeur condition est vide, le _if_ ne s'exécute pas
-- "le champ \_\_\_", fait référence aux champs d'un formulaire HTML
+- Pour récupérer une donnée, on utilise `$_POST['contenu']` (pas `$_POST[contenu]` sans guillemets)
+- Si une valeur de condition est vide/falsy, le `if` ne s'exécute pas
+- "Le champ ___" fait référence aux champs d'un formulaire HTML
 
 ### 🎓 Questions soutenance type
 
-- comment protéger les champs d'un formulaire ? : avec _htmlspecialchars_
-- faut-il utiliser l'interpolation **""**? : non, la concaténation **.**
-- que fait la fonction _htmlspecialchars_ ? : elle modifie les caractères spéciaux pour afficher un texte brut
+- _"Comment protéger les champs d'un formulaire ?"_ → Avec `htmlspecialchars()`
+- _"Faut-il utiliser l'interpolation `""` avec une fonction ?"_ → Non, la concaténation `.`
+- _"Que fait la fonction `htmlspecialchars()` ?"_ → Elle transforme les caractères spéciaux HTML en entités pour empêcher leur interprétation par le navigateur (et bloquer l'injection de balises malveillantes)
+
+---
 
 ## Session 4 - 2026-06-03 - après-midi
 
-# Conventional Commits
+### Conventional Commits
 
-## Format général
+#### Format général
 
 Optionnellement avec un scope : `type(scope): description`
 
-## Les types courants
+#### Les types courants
 
 | Préfixe     | Pour quoi                                                  | Exemple                                      |
 | ----------- | ---------------------------------------------------------- | -------------------------------------------- |
@@ -261,11 +271,11 @@ Optionnellement avec un scope : `type(scope): description`
 | `build:`    | Système de build, outils, dépendances externes             | `build: add composer config`                 |
 | `ci:`       | Configuration intégration continue (GitHub Actions...)     | `ci: add lint workflow`                      |
 
-## Règles dures
+#### Règles dures
 
-### 1. Forme impérative obligatoire
+##### 1. Forme impérative obligatoire
 
-Test mental : \_"If applied, this commit will _\_\_"_
+Test mental : _"If applied, this commit will ___"_
 
 | Bon ✅                  | Mauvais ❌                 |
 | ----------------------- | -------------------------- |
@@ -273,25 +283,27 @@ Test mental : \_"If applied, this commit will _\_\_"_
 | `fix XSS vulnerability` | `fixing XSS vulnerability` |
 | `update README`         | `updates README`           |
 
-### 2. Atomicité
+##### 2. Atomicité
 
 **1 commit = 1 changement logique cohérent.**
 Si tu touches à plusieurs sujets sans lien : c'est plusieurs commits.
 
-### 3. Longueur
+##### 3. Longueur
 
 - Ligne de titre : **≤ 72 caractères** (idéal 50)
 - Si tu as plus à dire : un saut de ligne, puis un corps explicatif
 
-## Exemple d'historique propre
+#### Exemple d'historique propre
 
-feat: add admin login with password*verify
-chore: ignore seed*\*.php temporary scripts
+```
+feat: add admin login with password_verify
+chore: ignore seed_*.php temporary scripts
 docs: add vade-mecum technique with PDO section
 refactor: extract PDO connection to reusable db.php
 fix: handle empty form submission
+```
 
-## Anti-patterns à éviter
+#### Anti-patterns à éviter
 
 - ❌ `update` → trop vague, dit rien
 - ❌ `fix bug` → quel bug ?
@@ -299,72 +311,251 @@ fix: handle empty form submission
 - ❌ `commit` → pléonasme
 - ❌ Verbes au passé : `added`, `fixed`, `updated`
 
-### .gitignore
+### `.gitignore`
 
-- .gitignore est un fichier qui dit à Git "ne suis _JAMAIS_ ces fichiers - ils n'ont pas leur place dans l'historique".
+- `.gitignore` est un fichier qui dit à Git "ne suis **JAMAIS** ces fichiers — ils n'ont pas leur place dans l'historique".
 
-## fichiers .gitignore
+#### Fichiers à ignorer dans `.gitignore`
 
-- fichiers **système** générés par l'OS : .DS_Store(macOS), Thumbs.db(Windows)
-- fichiers **secrets** : .env, mots de passe en dur
-- fichiers **temporaires** ou de **cache** : _.log, _.tmp
-- **dépendances générées** : node.modules/, vendor/
-- fichiers **d'éditeurs** : .vscode/, .idea/
+- Fichiers **système** générés par l'OS : `.DS_Store` (macOS), `Thumbs.db` (Windows)
+- Fichiers **secrets** : `.env`, mots de passe en dur
+- Fichiers **temporaires** ou de **cache** : `*.log`, `*.tmp`
+- **Dépendances générées** : `node_modules/`, `vendor/`
+- Fichiers **d'éditeurs** : `.vscode/`, `.idea/`
 
 ### 🎯 Exercices réalisés
 
-- initialisation Git avec la commande git init pour initialiser un repo local
-- création du fichier .gitignore : configuration des fichiers ignorés lors d'un push => fichiers système, secrets, temporaires, éditeur, dépendances
-- git status : pour savoir où on en est dans le repo
-- git add . : pour ajouter tous les fichiers du dossier au repo
-- premier commit : construction **préfixe: impératif(ex : add) -m "message du commit (≤ à 72 caractères, idéal 50)"**
-- git push
+- Initialisation Git avec la commande `git init` pour initialiser un repo local
+- Création du fichier `.gitignore` : configuration des fichiers ignorés lors d'un push → système, secrets, temporaires, éditeur, dépendances
+- `git status` : pour savoir où on en est dans le repo
+- `git add .` : pour ajouter tous les fichiers du dossier au repo (à utiliser avec précaution, préférer nommer les fichiers)
+- Premier commit : construction **`git commit -m "préfixe: verbe-impératif description"`** (≤ 72 caractères, idéal 50)
+- `git push` : envoi vers GitHub
 
 ### 🛠️ Réflexes acquis
 
-- utiliser **-m** pour les commits, choisir les préfixe, 1 modif = 1 commit, bien formuler le message
+- Utiliser **`-m`** pour le message de commit
+- Choisir le bon préfixe (`feat:`, `fix:`, `chore:`...)
+- 1 modif logique = 1 commit (atomicité)
+- Bien formuler le message à l'impératif présent
 
 ### ⚠️ Pièges où je me suis pris
 
-- ne pas oublier les guillemets entourant le message du commit
-- attention à l'orthographe ! (se relire)
-- bien choisir les préfixes des commit
-- les commits doivent décrire précisément ce qu'ils font
+- Ne pas oublier les guillemets entourant le message du commit
+- Attention à l'orthographe ! (se relire avant de valider)
+- Bien choisir le préfixe du commit
+- Les commits doivent décrire précisément ce qu'ils font
 
 ### 🎓 Questions soutenance type
 
-- où se font les commandes pour Git ? : dans le Terminal
-- comment initier un repo Git ? : avec la commande git init
-- quelle est la différence entre les préfixes feat: et chore: ? : feat: et pour l'ajout de fonctionnalités visibles, chore: pour la maintenance, gitignore...
+- _"Où se tapent les commandes Git ?"_ → Dans le Terminal
+- _"Comment initier un repo Git ?"_ → Avec la commande `git init`
+- _"Différence entre les préfixes `feat:` et `chore:` ?"_ → `feat:` est pour l'ajout de fonctionnalités visibles par l'utilisateur, `chore:` pour la maintenance (gitignore, config, dépendances)
+- _"Qu'est-ce que l'atomicité d'un commit ?"_ → 1 commit = 1 changement logique cohérent. Si plusieurs sujets sans lien sont touchés, on fait plusieurs commits.
+
+---
 
 ## Session 5 - 2026-06-04
 
 ### 🎯 Exercices réalisés
 
-- découverte de la fonction empty() : sert à tester si une variable est vide
-- découverte de l'opérateur &&(ET logique)pour "additionner" les conditions d'une variable
-- découverte de la fonction elseif (sinon si) : ajoute une condition à l'exécution d'une variable
-- second commit
-
-### 🛠️ Réflexes acquis
-
-- ne pas permettre qu'un formulaire vide soit soumis grâce à empty()
-- ajouter autant de conditions que nécessaire
+- Découverte de la fonction `empty()` : sert à tester si une variable est vide
+- Découverte de l'opérateur `&&` (ET logique) pour **combiner** plusieurs conditions
+- Découverte de la structure `elseif` (sinon si) : ajoute une condition alternative à un `if`
+- Second commit du projet
 
 ### 🧠 Concepts ancrés
 
-- fonction empty(), qui retourne **true** si une variable est vide. !empty(), elle, retourne : (fonction) n'est PAS vide
-- l'opérateur &&(ET logique) permets d'additionner les conditions d'une fonction
-- elseif(sinon si) permet d'ajouter une condition si le if est faux
-- else quant à elle s'exécute si aucune condition au-dessus n'est exécutée
+- **`empty($var)`** retourne `true` si la variable est vide (`""`, `0`, `null`, `[]`, non définie...)
+- **`!empty($var)`** retourne `true` si la variable **n'est PAS** vide (le `!` est la négation logique)
+- L'opérateur **`&&` (ET logique)** combine plusieurs conditions : toutes doivent être vraies pour que le bloc s'exécute
+- **`elseif`** (sinon si) permet d'ajouter une condition alternative si le `if` est faux
+- **`else`** s'exécute si **aucune** condition au-dessus n'a été remplie
+
+### 🛠️ Réflexes acquis
+
+- Ne pas permettre qu'un formulaire vide soit soumis grâce à `!empty()`
+- Ajouter autant de conditions que nécessaire avec `&&`
+- Structurer : `if (...) {...} elseif (...) {...} else {...}`
 
 ### ⚠️ Pièges où je me suis pris
 
-- oublie de parenthèse : il doit y avoir autant de parenthèses ouvrantes que fermantes
-- je ne sais pas encore déterminer le bon préfixe des commits
-- déterminer la bonne formulation des commits
+- **Oubli de parenthèse** : il doit y avoir autant de parenthèses ouvrantes que fermantes
+- Je ne sais pas encore déterminer du premier coup le bon préfixe des commits
+- Déterminer la bonne formulation des commits
 
 ### 🎓 Questions soutenance type
 
-- à quoi sert la fonction **empty()** ? : elle teste si une variable est vide
-- combien d'opérateurs && (ET logique) peut-on utiliser dans une condition ? : autant que nécessaire
+- _"À quoi sert la fonction `empty()` ?"_ → Elle teste si une variable est vide et retourne un booléen
+- _"Combien d'opérateurs `&&` (ET logique) peut-on utiliser dans une condition ?"_ → Autant que nécessaire
+- _"Différence entre `if / elseif / else` ?"_ → `if` teste la première condition. `elseif` teste une condition alternative si le `if` est faux. `else` est le filet de sécurité si aucune des conditions précédentes n'a été remplie.
+
+---
+
+## Session 6 - 2026-06-08
+
+### 🎯 Exercices réalisés
+
+- Découverte des **tableaux PHP** (indexés et associatifs)
+- Découverte de la boucle **`foreach`** (variantes simple et `$cle => $valeur`)
+- Fichier d'exercice `test_array.php` : création et parcours d'un tableau indexé et d'un tableau associatif
+- **Application au mini-blog** : ajout du tableau **multidimensionnel** `$articles` dans `index.php` et affichage des articles avec un `foreach`
+- 3 commits atomiques poussés sur GitHub (style + test_array + feature liste articles)
+
+### 🧠 Concepts ancrés
+
+#### 1. Tableaux indexés (clés numériques automatiques)
+
+```php
+$trucs = ["truc1", "truc2", "truc3"];
+```
+
+- PHP attribue automatiquement des clés numériques : `0`, `1`, `2`...
+- **Convention informatique** : les indices commencent à **0**, pas à 1
+- Accès à un élément : `echo $trucs[0];` affiche `truc1`
+
+#### 2. Tableaux associatifs (clés explicites)
+
+```php
+$machin = [
+    "donnee1" => "valeur1",
+    "donnee2" => "valeur2",
+    "donnee3" => "valeur3"
+];
+```
+
+- Chaque valeur est associée à une clé **choisie** par le développeur
+- Accès à un élément : `echo $machin["donnee1"];` affiche `valeur1`
+- ⚠️ Les clés d'un tableau PHP ne peuvent être QUE des **chaînes** (`string`) ou des **entiers** (`int`). Pas float, pas array, pas object.
+
+#### 3. Tableaux multidimensionnels (tableau de tableaux)
+
+Un tableau peut **contenir d'autres tableaux**. C'est exactement ce qu'on a fait pour `$articles` dans le mini-blog :
+
+```php
+$articles = [
+    [
+        "titre" => "Le premier article",
+        "contenu" => "Ici apparaîtra un article cool"
+    ],
+    [
+        "titre" => "Le second article",
+        "contenu" => "..."
+    ]
+];
+```
+
+- `$articles` est un tableau **indexé** dont chaque élément est lui-même un tableau **associatif**
+- Accès au titre du 1er article : `$articles[0]["titre"]`
+
+#### 4. La boucle `foreach`
+
+Dédiée aux tableaux PHP, elle parcourt automatiquement chaque élément et le rend disponible dans une variable.
+
+**Construction :**
+
+```php
+foreach ($tableau as $element) {
+    // ici je peux utiliser $element à chaque tour
+}
+```
+
+**Décodage :**
+
+- `$tableau` → le tableau à parcourir (déjà créé)
+- `as` → mot-clé obligatoire ("en tant que")
+- `$element` → nom de variable **au choix** : à chaque tour, cette variable prend la valeur de l'élément courant
+
+**Exemple :**
+
+```php
+$fruits = ["pomme", "banane", "kiwi"];
+
+foreach ($fruits as $fruit) {
+    echo $fruit;
+    echo "<br>";
+}
+```
+
+Ce qui s'exécute :
+
+```
+Tour 1 : $fruit = "pomme"  → echo "pomme" + <br>
+Tour 2 : $fruit = "banane" → echo "banane" + <br>
+Tour 3 : $fruit = "kiwi"   → echo "kiwi" + <br>
+Plus d'éléments → la boucle s'arrête
+```
+
+➝ Je n'ai plus à connaître le nombre d'éléments, PHP le fait pour moi.
+
+#### 5. Variante `foreach` pour tableau associatif
+
+```php
+$utilisateur = [
+    "nom" => "Kem",
+    "age" => 35,
+    "email" => "kem@exemple.fr"
+];
+
+foreach ($utilisateur as $cle => $valeur) {
+    echo $cle . " : " . $valeur . "<br>";
+}
+```
+
+**Résultat :**
+
+```
+nom : Kem
+age : 35
+email : kem@exemple.fr
+```
+
+➝ Avec `$cle => $valeur` (note le `=>` comme dans la déclaration du tableau), tu récupères **et** la clé **et** la valeur à chaque tour.
+
+#### 6. Le piège stateless RÉVÉLÉ par les tableaux ⚠️ FONDAMENTAL
+
+**Expérience faite en session :** j'ai soumis un 4ème article via le formulaire. Résultat :
+- ✅ Il s'affiche **sous le formulaire** (grâce au `if` qui traite le POST)
+- ❌ Il n'apparaît **PAS** dans la section "Articles publiés" (le foreach sur `$articles`)
+
+**Pourquoi ?** Parce que PHP est **stateless** (rappel session 2) :
+
+À chaque rechargement de page, le script PHP **repart de zéro**. Le tableau `$articles` est **réécrit en dur dans le code** à chaque exécution. Le 4ème article soumis via POST existe **uniquement le temps de l'exécution**, puis disparaît.
+
+➝ **Conséquence** : pour qu'un article soumis **persiste**, il faudra le **stocker quelque part en dehors du script PHP** (fichier, base de données...). C'est l'objet de la session 7.
+
+### 🛠️ Réflexes acquis
+
+- Fermer correctement les balises (notamment `?>` avant un bloc HTML)
+- Nommer la variable de boucle au **singulier** (`$articles as $article`) — convention de lisibilité
+- Distinguer le type de clé pour l'accès :
+  - Clé entière → `$tab[0]`
+  - Clé chaîne → `$tab["prenom"]`
+- Englober un tableau de tableaux avec des `[ ]` parents (multidimensionnel)
+
+### 🧠 Concepts ancrés (récap rapide)
+
+- Ne pas mélanger les types d'accès : utiliser la clé **EXACTE** sous laquelle l'élément est stocké
+  - Clé `0` (entier) → `$tab[0]`
+  - Clé `"prenom"` (chaîne) → `$tab["prenom"]`
+- Un tableau peut contenir d'autres tableaux → tableau **multidimensionnel**
+- Sans persistance, les données POST disparaissent à chaque rechargement (**stateless**)
+
+### ⚠️ Pièges où je me suis pris
+
+- Confondre tableau associatif et tableau indexé
+- Confondre les clés contenues dans les tableaux
+- Variable inexistante dans le `foreach` (copier-coller un nom qui n'existe pas)
+- Utiliser le même nom pour le tableau ET la variable de boucle (`foreach ($fruits as $fruits)`)
+- Mal englober un tableau de tableaux avec les `[ ]` parents
+- Oublier de fermer la balise `?>` avant un bloc HTML
+- **Prédiction erronée** sur le piège stateless (j'ai prédit "oui/oui/oui" → 0/3 correct)
+
+### 🎓 Questions soutenance type
+
+- _"À quoi sert la boucle `foreach` ?"_ → À parcourir un tableau pour **manipuler** chaque élément (afficher, transformer, filtrer, calculer...). L'affichage n'est qu'un cas d'usage parmi d'autres.
+- _"Quelle différence entre tableau indexé et tableau associatif ?"_ → Le tableau indexé a des clés **numériques automatiques** (0, 1, 2...). Le tableau associatif a des clés **choisies par le développeur**. En PHP, les clés ne peuvent être que des `string` ou des `int`.
+- _"Qu'est-ce qu'un tableau multidimensionnel ?"_ → Un tableau qui contient d'autres tableaux. Utile pour représenter des entités avec plusieurs propriétés (ex : liste d'articles, chaque article ayant un titre et un contenu).
+- _"Pourquoi un article soumis via le formulaire ne s'ajoute-t-il pas à la liste des articles publiés ?"_ → Parce que PHP est stateless. Le tableau `$articles` est réécrit en dur à chaque exécution. Pour persister, il faut stocker en dehors du script (fichier ou base de données).
+
+---
