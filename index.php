@@ -1,6 +1,6 @@
 <?php
-$nomDuBlog = 'Mon mini-blog';
-$messageBienvenue = 'Bienvenue sur mon blog';
+$nomDuBlog = 'You are Not Alone';
+$messageBienvenue = 'Ici, tu es chez TOI';
 $auteur = 'KodexKem';
 $articleSoumis = false;
 
@@ -34,15 +34,24 @@ $articles = [
     <link rel="stylesheet" href="style.css">
     <title><?php echo $nomDuBlog; ?></title>
 </head>
+<header>
+    <nav id="nav">
+        <ul>
+            <li><a href="">Accueil</a></li>
+            <li><a href="">Articles</a></li>
+            <li><a href="">Contact</a></li>
+        </ul>
+    </nav>
+</header>
 <body>
     <h1>
         <?php echo $messageBienvenue; ?>
     </h1>
-    <p><?php echo "Par " . $auteur; ?></p>
+    <p id="auteur"><?php echo "Par " . $auteur; ?></p>
 
     <form method="post" action="" id="form">
         <fieldset>
-            <legend>Mon 1er article</legend>
+            <legend>Ne sois pas timide</legend>
         <label for="titre">Titre de l'article</label>
         <input type="text" name="titre" id="titre">
         <label for="contenu">Contenu</label>
@@ -70,5 +79,8 @@ if ($articleSoumis === true && !empty($articleTitre) && !empty($articleContenu))
         }
         ?>
     </section>
+    <footer>
+        © KODEXKEM Tous droits réservés. <a href="">Mentions légales</a> <a href="">Cookies</a> <a href="">Confidentialité</a> <a href="">CGU</a>
+    </footer>
 </body> 
 </html>
