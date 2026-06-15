@@ -4,26 +4,42 @@ $messageBienvenue = 'Ici, tu es chez TOI';
 $auteur = 'KodexKem';
 $articleSoumis = false;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $articleSoumis = true;
-    $articleTitre = $_POST['titre'];
-    $articleContenu = $_POST['contenu'];
-}
+// Lire le fichier qui contient tous les articles
+$contenuFichier = file_get_contents("articles.json");
 
-$articles = [
-    [
-        "titre" => "Le premier article",
-        "contenu" => "Ici apparaîtra un article cool"
-    ],
-    [
-        "titre" => "Le second article",
-        "contenu" => "..."
-    ],
-    [
-        "titre" => "Le troisième article",
-        "contenu" => "..."
-    ]
-];
+// Transformer la chaîne JSON en tableau PHP
+$articles = json_decode($contenuFichier, true) ?? [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!empty($_POST['titre']) && !empty($_POST['contenu'])) {
+        $articleSoumis = true;
+        
+        // Étape 1 : Lire le fichier JSON existant
+        $contenuFichier = file_get_contents("articles.json");
+
+        // Étape 2 : Transformer la chaîne JSON en tableau PHP
+        //   (le 2ème paramètre "true" force le retour en tableau associatif)
+        $articles = json_decode($contenuFichier, true) ?? [];
+
+        // Étape 3 : Ajouter le nouvel article au tableau
+        //   👇 SYNTAXE NOUVELLE — c'est la réponse à ta Q3
+        $articles[] = [
+          "titre" => htmlspecialchars($_POST['titre']),
+          "contenu" => htmlspecialchars($_POST['contenu'])
+        ];
+
+        // Étape 4 : Reconvertir le tableau modifié en chaîne JSON
+        $nouveauContenu = json_encode($articles);
+
+        // Étape 5 : Réécrire la nouvelle chaîne dans le fichier
+        file_put_contents("articles.json", $nouveauContenu);
+
+        header("Location: index.php");   // ⬅️ Dit au navigateur "va vers index.php"
+        exit;                             // ⬅️ STOP — PHP s'arrête là
+        } else {
+            $erreurChamps = true;
+}
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +51,7 @@ $articles = [
     <title><?php echo $nomDuBlog; ?></title>
 </head>
 <header>
-    <nav id="nav">
+    <nav>
         <ul>
             <li><a href="">Accueil</a></li>
             <li><a href="">Articles</a></li>
@@ -60,13 +76,11 @@ $articles = [
         </fieldset>
     </form>
     <?php 
-if ($articleSoumis === true && !empty($articleTitre) && !empty($articleContenu)) {
+if ($articleSoumis === true) {
         echo "<p>Article soumis !</p>";
-        echo "<h2>" . htmlspecialchars($articleTitre) . "</h2>";
-        echo "<p>" . htmlspecialchars($articleContenu) . "</p>";
-    } elseif ($articleSoumis === true) {
-        echo "<p>Veuillez remplir tous les champs.</p>";
-    }
+        } elseif ($erreurChamps === true) {
+    echo "<p>Veuillez remplir tous les champs.</p>";
+}
 ?>
     <section>
         <h1>Articles publiés</h1>
