@@ -191,13 +191,13 @@ if ($valeur) {
 
 Tableau des résultats observés :
 
-| Valeur de `$valeur`     | Résultat |
-| ----------------------- | -------- |
-| `""` (chaîne vide)      | falsy    |
-| `"hello"` (chaîne pleine) | truthy |
-| `0` (entier zéro)       | falsy    |
-| `42` (entier non zéro)  | truthy   |
-| `null`                  | falsy    |
+| Valeur de `$valeur`       | Résultat |
+| ------------------------- | -------- |
+| `""` (chaîne vide)        | falsy    |
+| `"hello"` (chaîne pleine) | truthy   |
+| `0` (entier zéro)         | falsy    |
+| `42` (entier non zéro)    | truthy   |
+| `null`                    | falsy    |
 
 ➝ Les valeurs **"vides" ou "nulles"** (`""`, `0`, `null`, `false`, `[]`) sont considérées **falsy** par PHP dans un `if`. Le bloc ne s'exécute pas.
 
@@ -215,13 +215,13 @@ echo "<h2>" . htmlspecialchars($articleTitre) . "</h2>";
 
 Caractères transformés par `htmlspecialchars()` :
 
-| Caractère original | Devient   |
-| ------------------ | --------- |
-| `<`                | `&lt;`    |
-| `>`                | `&gt;`    |
-| `"`                | `&quot;`  |
-| `'`                | `&#039;`  |
-| `&`                | `&amp;`   |
+| Caractère original | Devient  |
+| ------------------ | -------- |
+| `<`                | `&lt;`   |
+| `>`                | `&gt;`   |
+| `"`                | `&quot;` |
+| `'`                | `&#039;` |
+| `&`                | `&amp;`  |
 
 ### 🧠 Concepts ancrés
 
@@ -238,7 +238,7 @@ Caractères transformés par `htmlspecialchars()` :
 
 - Pour récupérer une donnée, on utilise `$_POST['contenu']` (pas `$_POST[contenu]` sans guillemets)
 - Si une valeur de condition est vide/falsy, le `if` ne s'exécute pas
-- "Le champ ___" fait référence aux champs d'un formulaire HTML
+- "Le champ \_\_\_" fait référence aux champs d'un formulaire HTML
 
 ### 🎓 Questions soutenance type
 
@@ -275,7 +275,7 @@ Optionnellement avec un scope : `type(scope): description`
 
 ##### 1. Forme impérative obligatoire
 
-Test mental : _"If applied, this commit will ___"_
+Test mental : \_"If applied, this commit will _\_\_"_
 
 | Bon ✅                  | Mauvais ❌                 |
 | ----------------------- | -------------------------- |
@@ -515,6 +515,7 @@ email : kem@exemple.fr
 #### 6. Le piège stateless RÉVÉLÉ par les tableaux ⚠️ FONDAMENTAL
 
 **Expérience faite en session :** j'ai soumis un 4ème article via le formulaire. Résultat :
+
 - ✅ Il s'affiche **sous le formulaire** (grâce au `if` qui traite le POST)
 - ❌ Il n'apparaît **PAS** dans la section "Articles publiés" (le foreach sur `$articles`)
 
@@ -540,6 +541,10 @@ email : kem@exemple.fr
   - Clé `"prenom"` (chaîne) → `$tab["prenom"]`
 - Un tableau peut contenir d'autres tableaux → tableau **multidimensionnel**
 - Sans persistance, les données POST disparaissent à chaque rechargement (**stateless**)
+- file_put_contents() → écrire le résultat dans un le fichier
+- file_get_contents → lire le fichier existant
+- json_decode() → transformer la chaîne JSON lue en tableau PHP
+- json_encode() → transformer le tableau modifié en chaîne JSON
 
 ### ⚠️ Pièges où je me suis pris
 
@@ -557,5 +562,126 @@ email : kem@exemple.fr
 - _"Quelle différence entre tableau indexé et tableau associatif ?"_ → Le tableau indexé a des clés **numériques automatiques** (0, 1, 2...). Le tableau associatif a des clés **choisies par le développeur**. En PHP, les clés ne peuvent être que des `string` ou des `int`.
 - _"Qu'est-ce qu'un tableau multidimensionnel ?"_ → Un tableau qui contient d'autres tableaux. Utile pour représenter des entités avec plusieurs propriétés (ex : liste d'articles, chaque article ayant un titre et un contenu).
 - _"Pourquoi un article soumis via le formulaire ne s'ajoute-t-il pas à la liste des articles publiés ?"_ → Parce que PHP est stateless. Le tableau `$articles` est réécrit en dur à chaque exécution. Pour persister, il faut stocker en dehors du script (fichier ou base de données).
+
+## Session 7 - 2026-06-15
+
+### 🎯 Exercices réalisés
+
+- Compléter un squelette de code pour ajouter un article :
+
+  ```php
+
+      <?php
+      if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+      // Étape 1 : Lire le fichier JSON existant
+      $contenuFichier = file_get_contents("articles.json");
+
+      // Étape 2 : Transformer la chaîne JSON en tableau PHP
+      //   (le 2ème paramètre "true" force le retour en tableau associatif)
+      $articles = json_decode($contenuFichier, true);
+
+      // Étape 3 : Ajouter le nouvel article au tableau
+      //   👇 SYNTAXE NOUVELLE — c'est la réponse à ta Q3
+      $articles[] = [
+          "titre" => htmlspecialchars($_POST['titre']),
+          "contenu" => htmlspecialchars($_POST['contenu'])
+      ];
+
+      // Étape 4 : Reconvertir le tableau modifié en chaîne JSON
+      $nouveauContenu = json_encode($articles);
+
+      // Étape 5 : Réécrire la nouvelle chaîne dans le fichier
+      file_put_contents("articles.json", $nouveauContenu);
+
+  }
+  ?>
+  ```
+
+- lire le fichier articles.json et alimenter $articles
+
+  ```php
+  <?php
+  // Lire le fichier qui contient tous les articles
+  $contenuFichier = file_get_contents("articles.json");
+
+  // Transformer la chaîne JSON en tableau PHP
+  $articles = json_decode($contenuFichier, true) ?? [];
+  ?>
+  ```
+
+### 🧠 Concepts ancrés
+
+#### 1. Syntaxe nouvelle : ajouter un article au tableau
+
+```php
+<?php
+$articles[] = [
+"titre" => htmlspecialchars($_POST['titre']),
+"contenu" => htmlspecialchars($_POST['contenu'])
+];
+?>
+```
+
+#### 2. Opérateur ?? (null coalescing)
+
+- nouvelle syntaxe PHP :
+
+```php
+$valeur = $truc ?? "valeur de secours";
+```
+
+Décodage :"Si $truc est null(ou n'existe pas), utilise la valeur de secours à droite."
+
+## Exemples
+
+```php
+$nom = null;
+$nom ?? "Inconnu";       // → "Inconnu"
+
+$age = 35;
+$age ?? "Inconnu";       // → 35  (la valeur de gauche est utilisée car non null)
+
+$json = null;
+$articles = $json ?? []; // → []  (un tableau vide, sur lequel foreach passe sans erreur)
+```
+
+#### 3. Stockage persistant via fichier JSON pour pallier le stateless de PHP
+
+### 🛠️ Réflexes acquis
+
+- $articles[] pour ajouter un article au tableau
+- Empêcher le plantage du code quand une variable vaut **null** avec l'opérateur ??
+
+### ⚠️ Pièges où je me suis pris
+
+- htmlspecialchars() transforme les caractères en **entités HTML**, pour que le navigateur les affiche **comme du texte** et non comme des balises (= protection contre l'injection XSS). À utiliser au moment d'afficher les données qui viennent de l'utilisateur.
+- "==" est une comparaison simple / "===" est une comparaison stricte
+  Exemples :
+
+```php
+
+<?php
+"5" == 5      // → true (PHP convertit "5" en 5 avant de comparer)
+"5" === 5   // → false (chaîne ≠ entier, le type compte)
+
+0 == false  // → true
+0 === false // → false (entier ≠ booléen)
+?>
+```
+
+== ignore le type / === exige valeur ET type identiques.
+
+- quand une fonction "qui devait retourner quelque chose" échoue, elle retourne **false**.
+- json_decode() retourne **null** quand on lui donne quelque chose qui n'est pas du JSON.
+- foreach exige un tableau ou un objet.`
+- Au premier chargement,**articles.json** n'existe pas → **file_get_contents()** retourne **false** → **json_decode()** retourne **null** → **foreach(null)** plante. D'où le filet **?? []**.
+
+### 🎓 Questions soutenance type
+
+- Avec quel opérateur est-il possible d'empêcher le plantage du code ? : ?? (null coalescing)
+- Comment fonctionne-t-il ? : c'est un opérateur logique qui renvoie son opérande de droite lorsque son opérande de gauche vaut null ou n'existe pas / non définie et qui renvoie son opérande de gauche sinon.
+- Pourquoi avez-vous choisi un fichier JSON plutôt qu'une base de données ? : Pour ce projet d'apprentissage, le JSON est suffisant – peu de données, lecture/écriture simple, pas besoin d'installer un SGBD. La base de données viendra dans une étape ultérieure quand on aura besoin de requêtes complexes, d'utilisateurs multiples, ou de garantir l'intégrité des données.
+- Que se passe-t-il si articles.json est corrompu (JSON invalide) ? : **json_decode()** retourne **null**, et grâce à **?? []**, **$articles** devient un tableau vide → **foreach** ne plante pas, simplement aucun article n'est affiché.
 
 ---
