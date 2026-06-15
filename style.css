@@ -3,35 +3,26 @@ header {
   width: 98%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  place-items: center;
-}
-header #div1 {
-  height: 12dvh;
-  display: flex;
-  place-items: center;
 }
 
-div img {
-  height: 6dvh;
-  border: none;
-  filter: opacity(25%);
+nav {
+  width: 90%;
 }
 
-header #div2 {
-  height: 12dvh;
+ul {
+  width: 90%;
   display: flex;
-  flex-direction: row;
+  justify-content: space-around;
 }
 
 li {
-  display: inline-block;
-  padding: 3px;
+  list-style: none;
 }
 
-#nav {
-  display: flex;
-  flex-flow: row nowrap;
+a {
+  font-size: large;
+  text-decoration: none;
+  color: rgb(206, 89, 98);
 }
 
 body {
