@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $nomDuBlog = 'You are Not Alone';
 $messageBienvenue = 'Ici, tu es chez TOI';
 $auteur = 'KodexKem';
@@ -34,11 +36,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Étape 5 : Réécrire la nouvelle chaîne dans le fichier
         file_put_contents("articles.json", $nouveauContenu);
 
-        header("Location: index.php");   // ⬅️ Dit au navigateur "va vers index.php"
-        exit;                             // ⬅️ STOP — PHP s'arrête là
-        } else {
-            $erreurChamps = true;
-}
+        $_SESSION['flash'] = "Article soumis !";
+        unset($_SESSION['old_titre']);
+        unset($_SESSION['old_contenu']);
+    
+        header("Location: index.php"); // ⬅️ Dit au navigateur "va vers index.php"
+        exit;                          // ⬅️ STOP — PHP s'arrête là                          
+    } else {
+        $_SESSION['old_titre']    = $_POST['titre'];
+        $_SESSION['old_contenu']  = $_POST['contenu'];
+        $_SESSION['flash_erreur'] = "Veuillez remplir tous les champs.";
+    
+        header("Location: index.php");
+        exit;
+    }
 }
 ?>
 
@@ -69,17 +80,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <fieldset>
             <legend>Ne sois pas timide</legend>
         <label for="titre">Titre de l'article</label>
-        <input type="text" name="titre" id="titre">
-        <label for="contenu">Contenu</label>
-        <textarea name="contenu" id="contenu"></textarea>
+        <input type="text" name="titre" id="titre"
+       value="<?php echo htmlspecialchars($_SESSION['old_titre'] ?? ''); ?>">
+
+<label for="contenu">Contenu</label>
+<textarea name="contenu" id="contenu"><?php
+    echo htmlspecialchars($_SESSION['old_contenu'] ?? '');
+?></textarea>
         <button type="submit">Publier l'article</button>
         </fieldset>
     </form>
-    <?php 
-if ($articleSoumis === true) {
-        echo "<p>Article soumis !</p>";
-        } elseif ($erreurChamps === true) {
-    echo "<p>Veuillez remplir tous les champs.</p>";
+    <?php
+if (isset($_SESSION['flash'])) {
+    echo "<p>" . htmlspecialchars($_SESSION['flash']) . "</p>";
+    unset($_SESSION['flash']);
+}
+if (isset($_SESSION['flash_erreur'])) {
+    echo "<p>" . htmlspecialchars($_SESSION['flash_erreur']) . "</p>";
+    unset($_SESSION['flash_erreur']);
+    // les old_* restent en place pour pré-remplir les champs
 }
 ?>
     <section>
