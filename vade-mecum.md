@@ -238,7 +238,7 @@ Caractères transformés par `htmlspecialchars()` :
 
 - Pour récupérer une donnée, on utilise `$_POST['contenu']` (pas `$_POST[contenu]` sans guillemets)
 - Si une valeur de condition est vide/falsy, le `if` ne s'exécute pas
-- "Le champ \_\_\_" fait référence aux champs d'un formulaire HTML
+- "Le champ `___`" fait référence aux champs d'un formulaire HTML
 
 ### 🎓 Questions soutenance type
 
@@ -275,7 +275,7 @@ Optionnellement avec un scope : `type(scope): description`
 
 ##### 1. Forme impérative obligatoire
 
-Test mental : \_"If applied, this commit will _\_\_"_
+Test mental : `_"If applied, this commit will ___"_`
 
 | Bon ✅                  | Mauvais ❌                 |
 | ----------------------- | -------------------------- |
@@ -652,6 +652,13 @@ $articles = $json ?? []; // → []  (un tableau vide, sur lequel foreach passe s
 
 - $articles[] pour ajouter un article au tableau
 - Empêcher le plantage du code quand une variable vaut **null** avec l'opérateur ??
+- **header("Location: index.php"); exit;** transforme un **POST** en **GET** :
+  Après un POST avec sauvegarde réussie :
+
+1. header("Location: index.php") → dit au navigateur "va recharger en GET"
+2. exit; → arrête tout de suite le script PHP
+3. Le navigateur recharge en GET → plus de POST en mémoire navigateur
+4. Cmd+R ultérieur recharge ce GET → AUCUN risque de re-soumettre le POST
 
 ### ⚠️ Pièges où je me suis pris
 
@@ -683,5 +690,90 @@ $articles = $json ?? []; // → []  (un tableau vide, sur lequel foreach passe s
 - Comment fonctionne-t-il ? : c'est un opérateur logique qui renvoie son opérande de droite lorsque son opérande de gauche vaut null ou n'existe pas / non définie et qui renvoie son opérande de gauche sinon.
 - Pourquoi avez-vous choisi un fichier JSON plutôt qu'une base de données ? : Pour ce projet d'apprentissage, le JSON est suffisant – peu de données, lecture/écriture simple, pas besoin d'installer un SGBD. La base de données viendra dans une étape ultérieure quand on aura besoin de requêtes complexes, d'utilisateurs multiples, ou de garantir l'intégrité des données.
 - Que se passe-t-il si articles.json est corrompu (JSON invalide) ? : **json_decode()** retourne **null**, et grâce à **?? []**, **$articles** devient un tableau vide → **foreach** ne plante pas, simplement aucun article n'est affiché.
+
+---
+
+## Session 8 - 2026-06-16
+
+### 🎯 Exercices réalisés
+
+- Le concept ＄\_SESSION
+
+```php
+<?php
+// ⬇️ TROU 1 — démarre la session AVANT toute autre chose
+session_start();
+
+$nomDuBlog = 'You are Not Alone';
+$articleSoumis = false;
+
+// Lire les articles existants (inchangé)
+$contenuFichier = file_get_contents("articles.json");
+$articles = json_decode($contenuFichier, true) ?? [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!empty($_POST['titre']) && !empty($_POST['contenu'])) {
+
+        // ... les 5 étapes de sauvegarde ...
+
+        // ⬇️ TROU 2 — stocke le message dans la session AVANT le redirect
+        $_SESSION['flash'] = "Article soumis !";
+
+        header("Location: index.php");
+        exit;
+    } else {
+        $erreurChamps = true;
+    }
+}
+?>
+
+<!-- ... HTML head + body ... -->
+
+<!-- Dans le HTML, à l'endroit où on affichait "Article soumis !" -->
+<?php
+// ⬇️ TROU 3 — teste si un message flash existe (utilise isset() ou !empty())
+if (isset($_SESSION['flash'])) {
+echo "<p>" . htmlspecialchars($_SESSION['flash']) . "</p>";
+// ⬇️ TROU 4 — supprime le message après l'avoir affiché (effet one-shot)
+unset($_SESSION['flash']);
+}
+?>
+```
+
+### 🧠 Concepts ancrés
+
+- Après un POST avec sauvegarde réussie :
+
+1. **header("Location: index.php)** dit au navigateur : **va recharger en GET**
+2. **exit** : arrête tout de suite le script PHP
+3. le navigateur recharge en GET : plus de POST en mémoire navigateur
+4. Cmd + R recharge ce GET : plus aucun risque de re-soumettre le POST
+
+- **＄\_SESSION** est une **SUPERGLOBALE PERSISTANTE** utilisée pour sauver les données en tre les requêtes. Elle doit être appeler via **session_start();** **AVANT** envoi de HTML, TOUT EN HAUT DU FICHIER PHP ➞ PHP donne un cookie **PHPSESSID** (identifiant unique) au navigateur qui le renvoie à chaque requête, PHP retrouve le tableau $\_SESSION associé à cet ID, côté serveur.
+- pour détruire une variable, on utilise **unset()** : effet "one-shot" : la clé 'flash' n'existe plus dans **$\_SESSION**, le message est affiché UNE fois, puis effacé.
+
+### 🛠️ Réflexes acquis
+
+- $\_SESSION pour stocker les données côté serveur, toujours appelée par session_start()
+- Cookie PHPSESSID identifiant unique communiquant entre navigateur et serveur
+- unset($\_SESSION) pour supprimer 1 clé
+- Différence isset() et !empty() : isset() teste si une donnée existe et !empty() teste si elle existe ET n'est pas vide.
+
+### ⚠️ Pièges où je me suis pris
+
+- **header("Location: index.php)** dit au navigateur : **va recharger en GET**
+- **exit** : arrête tout de suite le script PHP
+- htmlspecialchars() transforme les caractères en entités HTML, pour que le navigateur les affiche comme du texte et non comme des balises : **JE NE DIS PLUS JAMAIS MOJIBAKE pour htmlspecialchars !!!!**
+  RAPPEL : mojibake est un bug d'encodage / entités HTML une représentation volontaire voulue pour bloquer le XSS
+- confondre $\_POST et $\_SESSION : $\_POST disparaît avec **exit;**, mais $\_SESSION est est stockée côté serveur, et est donc rechargé avec Cmd + R en GET
+- le cookie PHPSESSID ne transporte pas une donnée, juste un identifiant unique, la donnée est côté serveur !
+
+### 🎓 Questions soutenance type
+
+1. Qu'est ce que `$_SESSION`et à quoi sert-il ? : une variable SUPERGLOBALE qui permet de stocker les données côté serveur, et permet une persistance entre les requêtes.
+2. Pourquoi appelle-t-on `session_start()` en haut du fichier ? : démarrer le mécanisme ET être appelée AVANT tout output HTML (sinon "headers already sent").
+3. Quelle différence entre `$_POST` et `$_SESSION` ? : `$_POST` = 1 seule requête / `$_SESSION` = persiste entre plusieurs.
+4. Comment fonctionne le pattern flash (message one-shot) ? : set en session → redirect → display côté GET → unset.
+5. À quoi sert le cookie PHPSESSID, et où sont stockées les données ? : c'est un identifiant unique communiquant entre navigateur et serveur, qui stocke les données côté serveur.
 
 ---
