@@ -777,3 +777,113 @@ unset($_SESSION['flash']);
 5. À quoi sert le cookie PHPSESSID, et où sont stockées les données ? : c'est un identifiant unique communiquant entre navigateur et serveur, qui stocke les données côté serveur.
 
 ---
+
+## Session 9 - 2026-06-18
+
+### 🎯 Exercices réalisés
+
+- création de la base de données du projet `mini_blog`
+
+```php
+CREATE TABLE articles (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    titre           VARCHAR(255),
+    contenu         TEXT,
+    auteur          VARCHAR(100),
+    date_creation   DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+- test de la BDD
+
+```php
+INSERT INTO articles (titre, contenu, auteur) VALUES
+('Mon premier article', 'Bienvenue sur You are Not Alone !', 'Kem'),
+('Le deuxième', 'On teste la BDD MySQL.', 'Kem');
+```
+
+- création de db.php :
+
+```php
+<?php
+
+$dsn = 'mysql:host=localhost;dbname=mini_blog;charset=utf8mb4';
+$user = 'root';
+$pass = '';
+
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
+
+try {
+    $db = new PDO($dsn, $user, $pass, $options);
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
+```
+
+- création du test de la BDD :
+
+```php
+<?php
+
+require 'db.php';   // ⬅️ charge notre db.php (qui crée $db)
+
+echo "Connexion OK !<br>";
+
+$stmt = $db->query('SELECT * FROM articles');
+$articles = $stmt->fetchAll();
+
+echo "Nombre d'articles : " . count($articles) . "<br><br>";
+
+foreach ($articles as $article) {
+    echo "[" . $article['id'] . "] "
+       . $article['titre'] . " — par "
+       . $article['auteur'] . "<br>";
+}
+```
+
+### 🧠 Concepts ancrés
+
+- PDO + arguments du constructeur (DSN, user, pass, options)
+  Qu'est-ce que PDO et pourquoi le choisir ?
+
+**PDO** = **PHP Data Objects**. C'est une classe native de PHP qui permet de faire dialoguer mon code avec une base de données SQL.
+
+**Pourquoi PDO plutôt que `mysqli` ou les anciennes API ?** Deux raisons :
+
+1. **Sécurité** — PDO supporte nativement les **requêtes paramétrées** (prepared statements), qui sont la défense standard contre l'injection SQL.
+2. **Portabilité** — PDO est **multi-supports** : le même code marche avec MySQL, PostgreSQL, SQLite, Oracle, etc. Si on change de SGBD, on change juste 1 ligne au lieu de tout réécrire.
+
+- ATTR_ERRMODE = ERRMODE_EXCEPTION
+- ATTR_DEFAULT_FETCH_MODE = FETCH_ASSOC
+- query() retourne un PDOStatement (curseur)
+- fetch() = 1 ligne / fetchAll() = toutes les lignes
+- AUTO_INCREMENT + DEFAULT CURRENT_TIMESTAMP (colonnes auto)
+
+### 🛠️ Réflexes acquis
+
+- Toujours try/catch sur PDO
+- Toujours appeler les options ERRMODE et FETCH_ASSOC
+- en BDD locale, `user = root` et `pass =''`
+
+### ⚠️ Pièges où je me suis pris
+
+- ne pas confondre identifiants MySQL et GitHub
+- revoir les types SQL (TEXTAREA n'en est pas un !!)
+- bien identifier les données nécessaires à la BDD
+- ne pas utiliser d'accolades mais des parenthèses
+- Oublier la clé primaire (id INT AUTO_INCREMENT PRIMARY KEY)
+
+### 🎓 Questions soutenance type
+
+- "Pourquoi PDO plutôt que mysqli ?" : PDO supporte les requêtes préparées, barrières contre l'injection SQL et il est multi-supports (1 seule ligne à changer en cas de changement de SGBD)
+- "Décompose un DSN MySQL" : `mysql:host=______;dbname=______;charset=utf8mb4`
+  `mysql:` => driver PDO à utiliser
+  `host=` => adresse du serveur MySQL (localhost en local)
+  `dbname=` => nom de la BDD à utiliser
+  `charset=` => encodage des caractères (utf8mb4 pour les émojis)
+- "À quoi sert AUTO_INCREMENT ?" : `AUTO_INCREMENT` génère automatiquement un identifiant unique et croissant pour chaque nouvelle ligne. Très utile pour les clés primaires (PRIMARY KEY).
+- "Différence fetch / fetchAll ?" : fetch() et fetchAll() sont des méthodes d'un PDOStatement. fetch() récupère une ligne (et avance le curseur), fetchAll() récupère toutes les lignes d'un coup.
+- "Pourquoi en local c'est root sans mot de passe ?" : Ce sont les valeurs par défaut de XAMPP en local. Acceptable en dev (machine isolée, pas d'enjeu sécurité). En prod, INTERDIT : on aurait un user dédié avec mot de passe fort, stockés dans .env.
