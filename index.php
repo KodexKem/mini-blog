@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </nav>
 </header>
 <body>
-    <h1>
+    <h1 id="bienvenue">
         <?php echo $messageBienvenue; ?>
     </h1>
     <p id="auteur"><?php echo "Par " . $auteur; ?></p>

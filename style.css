@@ -1,12 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  background-image: url(BG.png);
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  color: antiquewhite;
+  padding: 5px;
+}
+
 header {
   height: 12dvh;
   width: 98%;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 nav {
   width: 90%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 ul {
@@ -25,12 +46,17 @@ a {
   color: rgb(206, 89, 98);
 }
 
-body {
-  display: grid;
-  place-items: center;
-  text-align: center;
-  background-image: url(BG.png);
-  color: antiquewhite;
+#bienvenue {
+  padding: 5px;
+  font-size: large;
+}
+
+#auteur {
+  padding: 10px;
+}
+
+legend {
+  margin: 10px;
 }
 
 h1 {
@@ -46,8 +72,12 @@ h1 {
 fieldset {
   display: grid;
   place-items: center;
-  height: 67.5dvh;
-  width: 80dvw;
+  height: 458px;
+  width: 308px;
+}
+
+#form {
+  margin: 3px;
 }
 
 #titre {
@@ -55,8 +85,8 @@ fieldset {
   color: antiquewhite;
   font-size: large;
   border-radius: 10px;
-  width: 20dvw;
-  height: 2dvh;
+  width: 50%;
+  height: 5dvh;
   background-color: gray;
 }
 
@@ -65,8 +95,8 @@ fieldset {
   border-radius: 10px;
   border: 1mm groove rgb(206, 89, 98);
   font-size: large;
-  width: 80dvw;
-  height: 4dvh;
+  width: 80%;
+  height: 30dvh;
 }
 
 button {
@@ -74,7 +104,7 @@ button {
   border: 1mm groove rgb(206, 89, 98);
   border-radius: 10px;
   width: 14dvw;
-  height: 3dvh;
+  height: 10dvh;
 }
 
 section {
