@@ -887,3 +887,53 @@ foreach ($articles as $article) {
 - "À quoi sert AUTO_INCREMENT ?" : `AUTO_INCREMENT` génère automatiquement un identifiant unique et croissant pour chaque nouvelle ligne. Très utile pour les clés primaires (PRIMARY KEY).
 - "Différence fetch / fetchAll ?" : fetch() et fetchAll() sont des méthodes d'un PDOStatement. fetch() récupère une ligne (et avance le curseur), fetchAll() récupère toutes les lignes d'un coup.
 - "Pourquoi en local c'est root sans mot de passe ?" : Ce sont les valeurs par défaut de XAMPP en local. Acceptable en dev (machine isolée, pas d'enjeu sécurité). En prod, INTERDIT : on aurait un user dédié avec mot de passe fort, stockés dans .env.
+
+---
+
+## Session 10 - 2026-06-19
+
+### 🎯 Exercices réalisés
+
+- remplacer 2 lignes JSON par 3 lignes PDO
+
+**SUPPRESSION**
+
+```php
+$contenuFichier = file_get_contents("articles.json");
+$articles = json_decode($contenuFichier, true) ?? [];
+```
+
+**AJOUT**
+
+```php
+require_once 'db.php';
+$stmt = $db->query('SELECT * FROM articles ORDER BY date_creation DESC');
+$articles = $stmt->fetchAll();
+```
+
+### 🧠 Concepts ancrés
+
+### 🛠️ Réflexes acquis
+
+### ⚠️ Pièges où je me suis pris
+
+- `db->query(...)` retourne un objet `PDOStatement` –– c'est un curseur sur le résultat de la requête. Pour avoir les données,on appelle ensuite `fetch()`ou `fetchAll()` qui extrait les vraies données
+- `DROP TABLE articles` détruit entièrement la table
+- on utilise les requêtes préparées pour protéger contre l'injection SQL
+
+```php
+// 1. Préparer (SQL avec placeholders, JAMAIS de concaténation)
+$stmt = $db->prepare("INSERT INTO articles (titre, contenu, auteur)
+                      VALUES (:titre, :contenu, :auteur)");
+
+// 2. Exécuter (en passant les valeurs séparément)
+$stmt->execute([
+    ':titre'   => $_POST['titre'],
+    ':contenu' => $_POST['contenu'],
+    ':auteur'  => 'KodexKem'
+]);
+```
+
+### 🎓 Questions soutenance type
+
+---
