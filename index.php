@@ -6,35 +6,21 @@ $messageBienvenue = 'Ici, tu es chez TOI';
 $auteur = 'KodexKem';
 $articleSoumis = false;
 
-// Lire le fichier qui contient tous les articles
-$contenuFichier = file_get_contents("articles.json");
-
-// Transformer la chaîne JSON en tableau PHP
-$articles = json_decode($contenuFichier, true) ?? [];
+require_once 'db.php';
+$stmt = $db->query('SELECT * FROM articles ORDER BY date_creation DESC');
+$articles = $stmt->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['titre']) && !empty($_POST['contenu'])) {
         $articleSoumis = true;
         
-        // Étape 1 : Lire le fichier JSON existant
-        $contenuFichier = file_get_contents("articles.json");
-
-        // Étape 2 : Transformer la chaîne JSON en tableau PHP
-        //   (le 2ème paramètre "true" force le retour en tableau associatif)
-        $articles = json_decode($contenuFichier, true) ?? [];
-
-        // Étape 3 : Ajouter le nouvel article au tableau
-        //   👇 SYNTAXE NOUVELLE — c'est la réponse à ta Q3
-        $articles[] = [
-          "titre" => htmlspecialchars($_POST['titre']),
-          "contenu" => htmlspecialchars($_POST['contenu'])
-        ];
-
-        // Étape 4 : Reconvertir le tableau modifié en chaîne JSON
-        $nouveauContenu = json_encode($articles);
-
-        // Étape 5 : Réécrire la nouvelle chaîne dans le fichier
-        file_put_contents("articles.json", $nouveauContenu);
+        $stmt = $db->prepare("INSERT INTO articles (titre, contenu, auteur) 
+                      VALUES (:titre, :contenu, :auteur)");
+        $stmt->execute([
+            ':titre'   => $_POST['titre'],
+            ':contenu' => $_POST['contenu'],
+            ':auteur'  => 'KodexKem'
+        ]);
 
         $_SESSION['flash'] = "Article soumis !";
         unset($_SESSION['old_titre']);
