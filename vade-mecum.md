@@ -15,7 +15,10 @@
 4. [Session 4 — 2026-06-03 après-midi : Git + Conventional Commits](#session-4---2026-06-03---après-midi)
 5. [Session 5 — 2026-06-04 : `empty()`, `&&`, `elseif`](#session-5---2026-06-04)
 6. [Session 6 — 2026-06-08 : Tableaux PHP + `foreach`](#session-6---2026-06-08)
-7. _(à venir — stockage en fichier JSON)_
+7. [Session 7 — 2026-06-15 : Persistance JSON (`file_get/put_contents`, `json_encode/decode`, `??`)](#session-7---2026-06-15)
+8. [Session 8 — 2026-06-16 : `$_SESSION` + flash messages + form persistence](#session-8---2026-06-16)
+9. [Session 9 — 2026-06-18 : BDD MySQL + connexion PDO (CP5 + début CP6)](#session-9---2026-06-18)
+10. [Session 10 — 2026-06-19 : Lecture/INSERT PDO + CSS responsive + module légal (CP6 complet + CP2)](#session-10---2026-06-19)
 
 ---
 
@@ -892,18 +895,20 @@ foreach ($articles as $article) {
 
 ## Session 10 - 2026-06-19
 
+> Grosse journée — 4 axes : lecture PDO + INSERT prepared + CSS responsive + module légal réutilisable.
+
 ### 🎯 Exercices réalisés
 
-- remplacer 2 lignes JSON par 3 lignes PDO
+#### 1️⃣ Lecture PDO — Remplacer le JSON par MySQL
 
-**SUPPRESSION**
+**SUPPRESSION** (les 2 lignes JSON en haut de `index.php`) :
 
 ```php
 $contenuFichier = file_get_contents("articles.json");
 $articles = json_decode($contenuFichier, true) ?? [];
 ```
 
-**AJOUT**
+**AJOUT** (les 3 lignes PDO à la même place) :
 
 ```php
 require_once 'db.php';
@@ -911,22 +916,14 @@ $stmt = $db->query('SELECT * FROM articles ORDER BY date_creation DESC');
 $articles = $stmt->fetchAll();
 ```
 
-### 🧠 Concepts ancrés
+#### 2️⃣ INSERT BDD avec requêtes préparées
 
-### 🛠️ Réflexes acquis
-
-### ⚠️ Pièges où je me suis pris
-
-- `db->query(...)` retourne un objet `PDOStatement` –– c'est un curseur sur le résultat de la requête. Pour avoir les données,on appelle ensuite `fetch()`ou `fetchAll()` qui extrait les vraies données
-- `DROP TABLE articles` détruit entièrement la table
-- on utilise les requêtes préparées pour protéger contre l'injection SQL
+Dans le bloc POST validé, remplacement des 5 étapes JSON par :
 
 ```php
-// 1. Préparer (SQL avec placeholders, JAMAIS de concaténation)
 $stmt = $db->prepare("INSERT INTO articles (titre, contenu, auteur)
                       VALUES (:titre, :contenu, :auteur)");
 
-// 2. Exécuter (en passant les valeurs séparément)
 $stmt->execute([
     ':titre'   => $_POST['titre'],
     ':contenu' => $_POST['contenu'],
@@ -934,6 +931,130 @@ $stmt->execute([
 ]);
 ```
 
+→ **Démo XSS en live** : taper `<script>alert('hack')</script>` dans le titre →
+stocké brut en BDD → affiché comme du texte (entités HTML) grâce à `htmlspecialchars()`.
+
+#### 3️⃣ CSS responsive total
+
+- **`box-sizing: border-box`** sur tous les éléments (reset universel) → fin des débordements
+- **`clamp(min, idéal, max)`** pour les `font-size` adaptatives
+- **`max-width`** pour limiter les éléments sur grands écrans (form ≤ 800px, articles ≤ 600px)
+- **`background-color` fallback** + `background-size: cover` sur le body
+
+#### 4️⃣ Module légal réutilisable
+
+Dossier `legal/` autonome avec :
+
+- `mentions-legales.php` (modèle complet à dupliquer)
+- `legal.css` (styles cohérents avec le thème)
+- `README.md` (instructions de réutilisation)
+
+À dupliquer pour `cookies.php`, `confidentialite.php`, `cgu.php`.
+
+### 🧠 Concepts ancrés
+
+- **`$db->query(...)`** retourne un objet **`PDOStatement`** — c'est un **curseur** sur le résultat. Pour avoir les données, on appelle ensuite **`fetch()`** (1 ligne) ou **`fetchAll()`** (toutes les lignes).
+- **`DROP TABLE articles`** **DÉTRUIT ENTIÈREMENT** la table (structure + données). À ne pas confondre avec `DELETE FROM articles` (vide les lignes, garde la table).
+- **Requêtes préparées** = LA protection contre l'**injection SQL**. On envoie d'abord la **structure SQL** avec des **placeholders** (`:titre`), puis **séparément** les valeurs avec `execute([])`. MySQL traite les valeurs comme du **texte pur**, jamais comme du SQL exécutable.
+- **Règle d'or sécurité** : on stocke **brut** en BDD, on échappe avec **`htmlspecialchars()` à l'AFFICHAGE** uniquement.
+- **`box-sizing: border-box`** : le `width` et `height` **incluent** le padding et la border. C'est dans 99% des reset CSS modernes.
+- **`clamp(min, idéal, max)`** : 3 valeurs pour des tailles fluides. Le navigateur interpole.
+
+### 🛠️ Réflexes acquis
+
+- toujours appeler `$db` avec `require_once 'db.php'`
+- en SQL, jamais de concaténation `CONCAT(colonne1, colonne2)` ➞ toujours `prepare()` + `execute()`
+- utiliser `ORDER BY` pour trier les liste
+- stocker les données en brutes pour les échapper à l'affichage
+- toujours utiliser `box-sizing: border-box` avec `*` en CSS
+- utiliser `clamp()` pour rester responsive :
+
+### ⚠️ Pièges où je me suis pris
+
+- Confondu `.env` (stockage secrets) et **requêtes préparées** (protection injection SQL) au recall
+- Placé les 3 lignes PDO **dans le `if validation OK`** au lieu d'**en haut du fichier** → la lecture GET ne marchait plus
+- Utilisé `font-size: large` (valeur fixe) au lieu de `clamp(min, idéal, max)` → pas responsive
+- Oublié `box-sizing: border-box` → débordement horizontal
+- Copié le footer de `mentions-legales.php` dans `index.php` **sans importer `legal.css`** → footer non stylé
+- Oublié de dupliquer le modèle pour `cookies.php`, `confidentialite.php`, `cgu.php` → 404 sur les liens
+
 ### 🎓 Questions soutenance type
+
+- "Qu'est-ce qu'une **injection SQL** ?" → attaque où l'utilisateur insère du SQL dans un champ
+- "Comment vous **protégez-vous** contre l'injection SQL ?" → **requêtes préparées** avec placeholders :
+
+**Le DANGER — concaténation (à NE JAMAIS faire)**
+
+```php
+// ❌ INTERDIT
+$titre = $_POST['titre'];
+$db->query("INSERT INTO articles (titre) VALUES ('$titre')");
+```
+
+Si l'utilisateur tape :
+
+`'); DROP TABLE articles; --`
+
+La requête finale devient :
+
+```SQL
+INSERT INTO article (titre) VALUES (''); DROP TABLE article; --`)
+```
+
+MySQL exécute alors 2 instructions:
+
+1. `INSERT INTO articles (titre) VALUES ('')`
+2. `DROP TABLE articles` ➞ table détruite
+   et le `--` commente la fin pour ne pas casser la syntaxe.
+
+**La Protection** —— requêtes préparées:
+
+```php
+$stmt = $db->prepare(
+    "INSERT INTO articles (titre, contenu, auteur)
+     VALUES (:titre, :contenu, :auteur)"
+);
+
+$stmt->execute([
+    ':titre'   => $_POST['titre'],
+    ':contenu' => $_POST['contenu'],
+    ':auteur'  => 'KodexKem'
+]);
+```
+
+- "Différence entre `query()` et `prepare()` ?" → `query()` exécute direct (sans paramètres), `prepare()` + `execute()` pour les requêtes avec données utilisateur
+- "Pourquoi on **échappe à l'affichage et pas au stockage** ?" → on stocke brut pour pouvoir copier-coller / lire la vraie donnée, et on échappe au moment de la rendre HTML pour bloquer l'exécution
+
+**STOCKER BRUT, ÉCHAPPER À L'AFFICHAGE**
+
+Scénario avec mon blog :
+
+Étape 1 —— L'utilisateur soumet :
+
+<script>alert('hack')</script>
+
+Étape 2 —— Stockage en BDD (brut, tel quel) :
+
+```SQL
+INSERT INTO articles (titre) VALUES ('<script>alert("hack")</script>')
+```
+
+➞ Dans la BDD, le champ titre contient littéralement : `<script>alert('hack')</script>`
+
+ÉTAPE 3 —— AFFICHAGE HTML (échappé) :
+
+```php
+echo "<h2>" . htmlspecialchars($article['titre']) . "</h2>";
+```
+
+➞ Sortie HTML reçue par le navigateur :
+
+```html
+<h2>&lt;script&gt;alert('hack')&lt;/script&gt;</h2>
+```
+
+Le navigateur affiche le texte `<script>alert('hack')</script>` mais ne l'exécute jamais.
+
+- Que représente `$stmt` dans votre code ? : c'est une variable PHP. c'est l'abréviation conventionnelle pour **statement**. Elle stocke un objet de type **PDOStatement**
 
 ---
