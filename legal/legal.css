@@ -1,0 +1,125 @@
+/* legal.css — styles spécifiques aux pages légales */
+
+/* ===== Header simplifié : juste le retour à l'accueil ===== */
+.legal-header {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.back-link {
+  color: rgb(206, 89, 98);
+  text-decoration: none;
+  font-size: clamp(1rem, 1.2vw, 1.3rem);
+  padding: 0.5rem 1rem;
+  border: 2px solid rgb(206, 89, 98);
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.back-link:hover {
+  background-color: rgba(206, 89, 98, 0.2);
+}
+
+/* ===== Footer cohérent avec le site principal ===== */
+.legal-footer {
+  max-width: 800px;
+  margin: 2rem auto 1rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  text-align: center;
+  color: rgb(206, 89, 98);
+  font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+}
+
+.legal-footer p {
+  margin-bottom: 0.5rem;
+}
+
+.legal-footer-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.legal-footer-nav a {
+  color: rgb(206, 89, 98);
+  text-decoration: none;
+}
+
+.legal-footer-nav a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Contenu principal de la page légale ===== */
+.legal-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  border: 2px solid rgb(206, 89, 98);
+}
+
+.legal-page h1 {
+  color: antiquewhite;
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.legal-page h2 {
+  color: rgb(206, 89, 98);
+  font-size: clamp(1.1rem, 1.8vw, 1.8rem);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.legal-page section {
+  margin-bottom: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px dashed rgba(206, 89, 98, 0.3);
+}
+
+.legal-page section:last-of-type {
+  border-bottom: none;
+}
+
+.legal-page p {
+  color: antiquewhite;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.legal-page a {
+  color: rgb(206, 89, 98);
+  text-decoration: underline;
+}
+
+.legal-note {
+  text-align: right;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 2rem;
+}
+
+footer {
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: rgb(206, 89, 98);
+  padding: 1rem;
+  margin-top: 2rem;
+  text-align: center;
+  width: 100%;
+  font-size: clamp(1rem, 1.3vw, 1.5rem);
+}
+
+footer a {
+  color: rgb(206, 89, 98);
+  margin: 0 0.5rem;
+}
