@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-$nomDuBlog = 'You are Not Alone';
-$messageBienvenue = 'Ici, tu es chez TOI';
+$nomDuBlog = 'Besoin de parler';
+$messageBienvenue = 'Vide ton sac';
 $auteur = 'KodexKem';
 $articleSoumis = false;
 
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <textarea name="contenu" id="contenu"><?php
     echo htmlspecialchars($_SESSION['old_contenu'] ?? '');
 ?></textarea>
-        <button type="submit">Publier l'article</button>
+        <button type="submit">Publier</button>
         </fieldset>
     </form>
     <?php
@@ -98,8 +98,17 @@ if (isset($_SESSION['flash_erreur'])) {
         }
         ?>
     </section>
-    <footer>
-        © KODEXKEM Tous droits réservés. <a href="">Mentions légales</a> <a href="">Cookies</a> <a href="">Confidentialité</a> <a href="">CGU</a>
-    </footer>
+    <footer class="legal-footer">
+    <p>© <span id="year"></span> KodexKem — Tous droits réservés.</p>
+    <nav class="legal-footer-nav">
+        <a href="legal/mentions-legales.php">Mentions légales</a>⎥
+        <a href="legal/cookies.php">Cookies</a>⎥
+        <a href="legal/confidentialite.php">Confidentialité</a>⎥
+        <a href="legal/cgu.php">CGU</a>
+    </nav>
+</footer>
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body> 
 </html>
