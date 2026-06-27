@@ -10,7 +10,7 @@ require_once 'db.php';
 $stmt = $db->query('SELECT * FROM articles ORDER BY date_creation DESC');
 $articles = $stmt->fetchAll();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_SESSION['admin_id'])  &&  $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['titre']) && !empty($_POST['contenu'])) {
         $articleSoumis = true;
         
@@ -62,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </h1>
     <p id="auteur"><?php echo "Par " . $auteur; ?></p>
 
+    <?php if ( isset($_SESSION['admin_id']) ): ?>
+
     <form method="post" action="" id="form">
         <fieldset>
             <legend>N'aie pas peur</legend>
@@ -76,6 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit">Publier</button>
         </fieldset>
     </form>
+
+    <?php else: ?>
+
+    <p><a href="login.php">Veuillez vous connecter svp</a></p>
+
+<?php endif; ?>
 
     <?php
 if (isset($_SESSION['flash'])) {
