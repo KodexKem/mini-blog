@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$nomDuBlog = 'Besoin de parler';
+$nomDuBlog = 'You Are Not Alone';
 $messageBienvenue = 'Vide ton sac';
 $auteur = 'KodexKem';
 $articleSoumis = false;
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form method="post" action="" id="form">
         <fieldset>
-            <legend>Ne sois pas timide</legend>
+            <legend>N'aie pas peur</legend>
         <label for="titre">Titre de l'article</label>
         <input type="text" name="titre" id="titre"
        value="<?php echo htmlspecialchars($_SESSION['old_titre'] ?? ''); ?>">
@@ -76,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit">Publier</button>
         </fieldset>
     </form>
+
     <?php
 if (isset($_SESSION['flash'])) {
     echo "<p>" . htmlspecialchars($_SESSION['flash']) . "</p>";
@@ -87,6 +88,7 @@ if (isset($_SESSION['flash_erreur'])) {
     // les old_* restent en place pour pré-remplir les champs
 }
 ?>
+
     <section>
         <h1>Articles publiés</h1>
         <?php
@@ -98,6 +100,7 @@ if (isset($_SESSION['flash_erreur'])) {
         }
         ?>
     </section>
+
     <footer class="legal-footer">
     <p>© <span id="year"></span> KodexKem — Tous droits réservés.</p>
     <nav class="legal-footer-nav">
@@ -107,8 +110,10 @@ if (isset($_SESSION['flash_erreur'])) {
         <a href="legal/cgu.php">CGU</a>
     </nav>
 </footer>
+
 <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 </script>
+
 </body> 
 </html>
