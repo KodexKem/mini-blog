@@ -45,10 +45,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="login.css">
     <title>Connexion admin –– You Are Not Alone</title>
 </head>
 <body>
+    <header>
+    <nav>
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="articles.php">Articles</a></li>
+
+            <?php if ( isset($_SESSION['admin_id']) ): ?>
+                <li><a href="logout.php">Déconnexion (<?= htmlspecialchars($_SESSION['admin_username']) ?>)</a></li>
+            <?php else: ?>
+                <li><a href="login.php">Connexion</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+</header>
     <h1>Connexion administrateur</h1>
 
     <?php if ($erreur): ?>
