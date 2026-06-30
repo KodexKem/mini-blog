@@ -7,7 +7,7 @@ $auteur = 'KodexKem';
 $articleSoumis = false;
 
 require_once 'db.php';
-$stmt = $db->query('SELECT * FROM articles ORDER BY date_creation DESC');
+$stmt = $db->query('SELECT * FROM articles ORDER BY date_creation DESC LIMIT 3');
 $articles = $stmt->fetchAll();
 
 if (isset($_SESSION['admin_id'])  &&  $_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -19,7 +19,7 @@ if (isset($_SESSION['admin_id'])  &&  $_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([
             ':titre'   => $_POST['titre'],
             ':contenu' => $_POST['contenu'],
-            ':auteur'  => 'KodexKem'
+            ':auteur'  => $_SESSION['admin_username']
         ]);
 
         $_SESSION['flash'] = "Article soumis !";
@@ -47,16 +47,21 @@ if (isset($_SESSION['admin_id'])  &&  $_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="style.css">
     <title><?php echo $nomDuBlog; ?></title>
 </head>
-<header>
+<body>
+    <header>
     <nav>
         <ul>
-            <li><a href="">Accueil</a></li>
-            <li><a href="">Articles</a></li>
-            <li><a href="">Contact</a></li>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="articles.php">Articles</a></li>
+
+            <?php if ( isset($_SESSION['admin_id']) ): ?>
+                <li><a href="logout.php">Déconnexion (<?= htmlspecialchars($_SESSION['admin_username']) ?>)</a></li>
+            <?php else: ?>
+                <li><a href="login.php">Connexion</a></li>
+            <?php endif; ?>
         </ul>
     </nav>
 </header>
-<body>
     <h1 id="bienvenue">
         <?php echo $messageBienvenue; ?>
     </h1>
@@ -98,16 +103,18 @@ if (isset($_SESSION['flash_erreur'])) {
 ?>
 
     <section>
-        <h1>Articles publiés</h1>
+        <h2>Articles publiés</h2>
         <?php
         foreach ($articles as $article) {
             echo "<article>";
-            echo "<h2>" . htmlspecialchars($article["titre"]) . "</h2>";  // titre sécurisé
+            echo "<h3>" . htmlspecialchars($article["titre"]) . "</h3>";  // titre sécurisé
             echo "<p>" . htmlspecialchars($article["contenu"]) . "</p>";    // contenu sécurisé
             echo "</article>";
         }
         ?>
     </section>
+
+    <a href="articles.php" class="lien-tous-articles">Voir plus d'articles</a>
 
     <footer class="legal-footer">
     <p>© <span id="year"></span> KodexKem — Tous droits réservés.</p>
