@@ -1,3 +1,5 @@
 .DS_Store
 .obsidian/
 seed_admin.php
+.env
+db.php
