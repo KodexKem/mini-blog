@@ -47,10 +47,7 @@ $articles = $stmt->fetchAll();
     <footer class="legal-footer">
     <p>© <span id="year"></span> KodexKem — Tous droits réservés.</p>
     <nav class="legal-footer-nav">
-        <a href="legal/mentions-legales.php">Mentions légales</a>⎥
-        <a href="legal/cookies.php">Cookies</a>⎥
-        <a href="legal/confidentialite.php">Confidentialité</a>⎥
-        <a href="legal/cgu.php">CGU</a>
+        <a href="legal/mentions-legales.php">Mentions légales</a>
     </nav>
 </footer>
 

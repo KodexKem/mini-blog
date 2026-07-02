@@ -1,17 +1,7 @@
 <?php
 /**
- * Mentions légales — page autonome réutilisable
- *
- * UTILISATION :
- *   1. Copier ce dossier `legal/` à la racine de n'importe quel site
- *   2. Adapter le chemin du CSS (ligne ~15) si nécessaire
- *   3. Remplacer chaque [À PERSONNALISER] par les vraies infos
- *   4. Adapter le nom du site dans le <title> et le footer
- *
- * RESSOURCE OFFICIELLE :
- *   https://www.cnil.fr/fr/mentions-legales
- *
- * Auteur initial : KodexKem
+ * Mentions légales — You Are Not Alone
+ * Éditeur : KEMOUN Jérémie (KodexKem)
  */
 ?>
 <!DOCTYPE html>
@@ -19,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentions légales — [Nom du site]</title>
+    <title>Mentions légales — You Are Not Alone</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="legal.css">
 </head>
@@ -36,29 +26,26 @@
     <section>
         <h2>1. Éditeur du site</h2>
         <p>
-            <strong>Raison sociale :</strong> [À PERSONNALISER]<br>
-            <strong>Forme juridique :</strong> [Association loi 1901 / SAS / SARL / Auto-entrepreneur...]<br>
-            <strong>SIRET :</strong> [À PERSONNALISER]<br>
-            <strong>Adresse du siège :</strong> [À PERSONNALISER]<br>
-            <strong>Téléphone :</strong> [À PERSONNALISER]<br>
-            <strong>Email :</strong> [À PERSONNALISER]
+            <strong>Nom :</strong> KodexKem<br>
+            <strong>Forme juridique :</strong> Particulier<br>
+            <strong>Email :</strong> kodexkem@gmail.com
         </p>
     </section>
 
     <section>
         <h2>2. Directeur de la publication</h2>
         <p>
-            <strong>Nom :</strong> [À PERSONNALISER]<br>
-            <strong>Qualité :</strong> [Président / Directeur / Auto-entrepreneur...]
+            <strong>Nom :</strong> KEMOUN Jérémie<br>
+            <strong>Qualité :</strong> Éditeur du site
         </p>
     </section>
 
     <section>
         <h2>3. Hébergement</h2>
         <p>
-            <strong>Hébergeur :</strong> [À PERSONNALISER : Alwaysdata / OVH / Hostinger...]<br>
-            <strong>Adresse :</strong> [Adresse de l'hébergeur]<br>
-            <strong>Site web :</strong> [URL de l'hébergeur]
+            <strong>Hébergeur :</strong> Alwaysdata<br>
+            <strong>Adresse :</strong> 91 rue du Faubourg Saint-Honoré, 75008 Paris, France<br>
+            <strong>Site web :</strong> https://www.alwaysdata.com
         </p>
     </section>
 
@@ -67,20 +54,22 @@
         <p>
             L'ensemble du contenu de ce site (textes, images, vidéos, code source, etc.)
             est protégé par le droit d'auteur et reste la propriété exclusive de
-            [Nom de l'éditeur], sauf mention contraire.
+            KEMOUN Jérémie, sauf mention contraire.
         </p>
         <p>
             Toute reproduction, représentation, modification, publication ou adaptation
             de tout ou partie des éléments du site est interdite sans autorisation écrite
-            préalable de [Nom de l'éditeur].
+            préalable de KEMOUN Jérémie.
         </p>
     </section>
 
     <section>
         <h2>5. Données personnelles</h2>
         <p>
-            Pour le détail du traitement de vos données personnelles, consultez notre
-            <a href="confidentialite.php">Politique de confidentialité</a>.
+            Ce site n'utilise qu'un cookie de session technique (PHPSESSID)
+            nécessaire à l'authentification administrateur, exempté de consentement
+            selon la recommandation CNIL. Aucune donnée personnelle des visiteurs
+            n'est collectée, stockée ni transmise à des tiers.
         </p>
     </section>
 
@@ -88,23 +77,20 @@
         <h2>6. Contact</h2>
         <p>
             Pour toute question relative au site ou à son contenu, vous pouvez nous contacter
-            à l'adresse : <strong>[Email de contact]</strong>.
+            à l'adresse : <strong>kodexkem@gmail.com</strong>.
         </p>
     </section>
 
     <p class="legal-note">
-        <em>Dernière mise à jour : [JJ/MM/AAAA]</em>
+        <em>Dernière mise à jour : 01/07/2026</em>
     </p>
 
 </main>
 
 <footer class="legal-footer">
-    <p>© <span id="year"></span> [Nom du site] — Tous droits réservés.</p>
+    <p>© <span id="year"></span> KodexKem — Tous droits réservés.</p>
     <nav class="legal-footer-nav">
-        <a href="mentions-legales.php">Mentions légales</a>⎥
-        <a href="cookies.php">Cookies</a>⎥
-        <a href="confidentialite.php">Confidentialité</a>⎥
-        <a href="cgu.php">CGU</a>
+        <a href="mentions-legales.php">Mentions légales</a>
     </nav>
 </footer>
 

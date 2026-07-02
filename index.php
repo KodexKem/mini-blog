@@ -62,10 +62,11 @@ if (isset($_SESSION['admin_id'])  &&  $_SERVER['REQUEST_METHOD'] === 'POST') {
         </ul>
     </nav>
 </header>
-    <h1 id="bienvenue">
-        <?php echo $messageBienvenue; ?>
-    </h1>
-    <p id="auteur"><?php echo "Par " . $auteur; ?></p>
+    <main>
+        <h1 id="bienvenue">
+            <?php echo $messageBienvenue; ?>
+        </h1>
+        <p id="auteur"><?php echo "Par " . $auteur; ?></p>
 
     <?php if ( isset($_SESSION['admin_id']) ): ?>
 
@@ -116,13 +117,13 @@ if (isset($_SESSION['flash_erreur'])) {
 
     <a href="articles.php" class="lien-tous-articles">Voir plus d'articles</a>
 
+
+</main>
+
     <footer class="legal-footer">
     <p>© <span id="year"></span> KodexKem — Tous droits réservés.</p>
     <nav class="legal-footer-nav">
-        <a href="legal/mentions-legales.php">Mentions légales</a>⎥
-        <a href="legal/cookies.php">Cookies</a>⎥
-        <a href="legal/confidentialite.php">Confidentialité</a>⎥
-        <a href="legal/cgu.php">CGU</a>
+        <a href="legal/mentions-legales.php">Mentions légales</a>
     </nav>
 </footer>
 
