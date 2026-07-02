@@ -6,6 +6,22 @@ if (!isset($_SESSION['admin_id'])) {
     header("Location: login.php");
     exit;
 }
+
+require_once 'db.php';
+if (isset($_POST['delete_id']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+     $stmt = $db->prepare(
+            "DELETE FROM articles WHERE id = :id"
+        );
+
+        $stmt->execute([':id' => $_POST['delete_id']]);
+
+        header("Location: admin.php");
+        exit;
+}
+$nombre = $db->query('SELECT COUNT(*) FROM articles')->fetchColumn();
+$stmt = $db->query('SELECT * FROM articles ORDER BY date_creation DESC LIMIT 10');
+$articles = $stmt->fetchAll();
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -29,8 +45,34 @@ if (!isset($_SESSION['admin_id'])) {
         </ul>
     </nav>
 </header>
-    <h1>✅ Connecté en tant que <?= htmlspecialchars($_SESSION['admin_username']) ?></h1>
-    <p>Tu es authentifié avec admin_id = <?= $_SESSION['admin_id'] ?></p>
+<main>
+<h1>✅ Connecté en tant que <?= htmlspecialchars($_SESSION['admin_username']) ?></h1>
+<p>Nombre d'articles publiés : <?= $nombre ?></p>
+<section>
+    <h2>Derniers articles</h2>
+            <?php foreach ($articles as $article): ?>
+                <article>
+                    <h3><?= htmlspecialchars($article['titre']) ?></h3>
+                    <p><?= htmlspecialchars($article['contenu']) ?></p>
+                <form method="POST" action="admin.php">
+                    <input type="hidden" name="delete_id" value="<?= $article['id'] ?>">
+                    <button type="submit">🗑️ Supprimer</button>
+                </form>
+                </article>
+            <?php endforeach; ?>
+    </section>
     <p><a href="logout.php">Se déconnecter</a></p>
+    </main>
+
+    <footer class="legal-footer">
+    <p>© <span id="year"></span> KodexKem — Tous droits réservés.</p>
+    <nav class="legal-footer-nav">
+        <a href="legal/mentions-legales.php">Mentions légales</a>
+    </nav>
+</footer>
+
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
