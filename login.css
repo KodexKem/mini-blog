@@ -18,10 +18,10 @@ html {
 }
 
 body {
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 main {
@@ -71,10 +71,10 @@ button {
 }
 
 footer {
-  position: fixed;
   bottom: 0;
   align-self: center;
   width: 100%;
+  margin-top: 2rem;
 }
 
 .legal-footer {
