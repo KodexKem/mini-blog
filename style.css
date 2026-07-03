@@ -6,7 +6,7 @@
 
 header {
   height: 12dvh;
-  width: 98%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -41,19 +41,31 @@ main {
   display: flex;
   flex-flow: column wrap;
   justify-content: space-between;
+  text-align: center;
+  padding: 0.5rem;
+  padding-bottom: 3rem;
+  text-align: center;
 }
 
 body {
   background-color: #0a0a0a;
   height: 100%;
   width: 100%;
-  padding: 0.5rem;
-  padding-bottom: 3rem;
+  padding: 0;
   background-image: url(BG.png);
   background-size: auto auto;
   background-repeat: no-repeat;
   background-position-x: 100%;
   color: antiquewhite;
+}
+
+main {
+  height: auto;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  padding: 0.5rem; /* ajouté */
+  padding-bottom: 3rem; /* ajouté */
 }
 
 a {
@@ -90,7 +102,7 @@ section p {
 
 #form {
   display: grid;
-  width: 90dvw;
+  width: 90%;
   height: 70dvh;
   padding: 1rem;
   margin: 0.5rem;
@@ -210,4 +222,22 @@ section article p {
 
 .legal-footer-nav a:hover {
   text-decoration: underline;
+}
+
+.btn-delete {
+  background-color: transparent;
+  border: 1px solid rgb(206, 89, 98);
+  color: rgb(206, 89, 98);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: auto; /* override le width: 25% global */
+  height: auto; /* override le height: 5dvh global */
+  transition: all 0.2s;
+}
+
+.btn-delete:hover {
+  background-color: rgb(206, 89, 98);
+  color: antiquewhite;
 }

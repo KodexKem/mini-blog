@@ -31,7 +31,7 @@ $articles = $stmt->fetchAll();
   </header>
     <main>
         <h1>Tous les articles</h1>
-
+            <section>
         <?php if (empty($articles)): ?>
             <p>Rien à lire pour le moment 😢</p>
         <?php else: ?>
@@ -42,6 +42,7 @@ $articles = $stmt->fetchAll();
                 </article>
             <?php endforeach; ?>
         <?php endif; ?>
+        </section>
     </main>
 
     <footer class="legal-footer">

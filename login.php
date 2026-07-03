@@ -64,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </ul>
     </nav>
 </header>
+<main>
     <h1>Connexion administrateur</h1>
 
     <?php if ($erreur): ?>
@@ -79,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button type="submit">Se connecter</button>
     </form>
+    </main>
 
 <footer class="legal-footer">
     <p>© <span id="year"></span> KodexKem — Tous droits réservés.</p>

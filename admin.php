@@ -56,7 +56,7 @@ $articles = $stmt->fetchAll();
                     <p><?= htmlspecialchars($article['contenu']) ?></p>
                 <form method="POST" action="admin.php">
                     <input type="hidden" name="delete_id" value="<?= $article['id'] ?>">
-                    <button type="submit">🗑️ Supprimer</button>
+                    <button type="submit" class="btn-delete">🗑️ Supprimer</button>
                 </form>
                 </article>
             <?php endforeach; ?>
