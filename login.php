@@ -4,34 +4,43 @@ require_once 'db.php';
 
 $erreur = null;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$max_tentatives = 3;
+$duree_blocage = 300;
+
+if (!isset($_SESSION['tentatives_echouees'])) {
+    $_SESSION['tentatives_echouees'] = 0;
+}
+
+if (isset($_SESSION['blocage_jusqu_a']) && time() < $_SESSION['blocage_jusqu_a']) {
+    $secondes_restantes = $_SESSION['blocage_jusqu_a'] - time();
+    $erreur = "Trop de tentatives. Réessayez dans {$secondes_restantes} secondes.";
+
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['username']) && !empty($_POST['password'])) {
 
-        // 1. Préparer la requête (PDO prepared statement — sécurité injection SQL)
-        $stmt = $db->prepare(
-            "SELECT * FROM admins WHERE username = :username"
-        );
-
-        // 2. Exécuter avec le placeholder
+        $stmt = $db->prepare("SELECT * FROM admins WHERE username = :username");
         $stmt->execute([':username' => $_POST['username']]);
-
-        // 3. Récupérer la ligne (UNE seule — pas fetchAll)
         $admin = $stmt->fetch();
 
-        // 4. Vérifier que l'admin existe ET que le mot de passe correspond
         if ($admin && password_verify($_POST['password'], $admin['password_hash'])) {
 
-            // 5. Connexion réussie : marquer le user en session
-            $_SESSION['admin_id']       = $admin['id'];
-            $_SESSION['admin_username'] = $admin['username'];
+            $_SESSION['admin_id']            = $admin['id'];
+            $_SESSION['admin_username']       = $admin['username'];
+            $_SESSION['tentatives_echouees']  = 0;
+            unset($_SESSION['blocage_jusqu_a']);
 
-            // 6. Rediriger vers le backoffice
             header("Location: admin.php");
             exit;
 
         } else {
-            // ⚠️ message GÉNÉRIQUE (pas "user inconnu" vs "mauvais mdp")
-            $erreur = "Identifiants incorrects.";
+            $_SESSION['tentatives_echouees']++;
+
+            if ($_SESSION['tentatives_echouees'] >= $max_tentatives) {
+                $_SESSION['blocage_jusqu_a'] = time() + $duree_blocage;
+                $erreur = "Trop de tentatives. Compte bloqué temporairement.";
+            } else {
+                $erreur = "Identifiants incorrects.";
+            }
         }
 
     } else {
