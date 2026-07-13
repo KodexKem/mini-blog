@@ -1,6 +1,3 @@
-/* legal.css — styles spécifiques aux pages légales */
-
-/* ===== Header simplifié : juste le retour à l'accueil ===== */
 .legal-header {
   width: 100%;
   padding: 1rem 1.5rem;
@@ -23,7 +20,6 @@
   background-color: rgba(206, 89, 98, 0.2);
 }
 
-/* ===== Footer cohérent avec le site principal ===== */
 .legal-footer {
   max-width: 800px;
   margin: 2rem auto 1rem;
@@ -56,7 +52,6 @@
   text-decoration: underline;
 }
 
-/* ===== Contenu principal de la page légale ===== */
 .legal-page {
   max-width: 800px;
   margin: 2rem auto;
