@@ -7,8 +7,15 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 require_once 'db.php';
 if (isset($_POST['delete_id']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        die("Requête invalide (jeton CSRF manquant ou incorrect).");
+    }
      $stmt = $db->prepare(
             "DELETE FROM articles WHERE id = :id"
         );
@@ -56,6 +63,7 @@ $articles = $stmt->fetchAll();
                     <p><?= htmlspecialchars($article['contenu']) ?></p>
                 <form method="POST" action="admin.php">
                     <input type="hidden" name="delete_id" value="<?= $article['id'] ?>">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
                     <button type="submit" class="btn-delete">🗑️ Supprimer</button>
                 </form>
                 </article>
