@@ -24,6 +24,7 @@ if (isset($_SESSION['blocage_jusqu_a']) && time() < $_SESSION['blocage_jusqu_a']
 
         if ($admin && password_verify($_POST['password'], $admin['password_hash'])) {
 
+            session_regenerate_id(true);
             $_SESSION['admin_id']            = $admin['id'];
             $_SESSION['admin_username']       = $admin['username'];
             $_SESSION['tentatives_echouees']  = 0;

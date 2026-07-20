@@ -10,7 +10,14 @@ require_once 'db.php';
 $stmt = $db->query('SELECT * FROM articles ORDER BY date_creation DESC LIMIT 3');
 $articles = $stmt->fetchAll();
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 if (isset($_SESSION['admin_id'])  &&  $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        die("Requête invalide (jeton CSRF manquant ou incorrect).");
+    }
     if (!empty($_POST['titre']) && !empty($_POST['contenu'])) {
         $articleSoumis = true;
         
@@ -74,6 +81,7 @@ if (isset($_SESSION['admin_id'])  &&  $_SERVER['REQUEST_METHOD'] === 'POST') {
         <fieldset>
             <legend>N'aie pas peur</legend>
         <label for="titre">Titre de l'article</label>
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
         <input type="text" name="titre" id="titre"
        value="<?php echo htmlspecialchars($_SESSION['old_titre'] ?? ''); ?>">
 
