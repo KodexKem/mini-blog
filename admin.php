@@ -1,4 +1,5 @@
 <?php
+require_once 'session_config.php';
 session_start();
 
 // Protection MINIMALE : si pas connecté → redirect login
