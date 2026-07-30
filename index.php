@@ -19,7 +19,7 @@ if (isset($_SESSION['admin_id'])  &&  $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         die("Requête invalide (jeton CSRF manquant ou incorrect).");
     }
-    if (!empty($_POST['titre']) && !empty($_POST['contenu'])) {
+    if (!empty($_POST['titre']) && !empty($_POST['contenu']) && strlen($_POST['titre']) < 255 && strlen($_POST['contenu']) < 5000) {
         $articleSoumis = true;
         
         $stmt = $db->prepare("INSERT INTO articles (titre, contenu, auteur) 
@@ -34,8 +34,8 @@ if (isset($_SESSION['admin_id'])  &&  $_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($_SESSION['old_titre']);
         unset($_SESSION['old_contenu']);
     
-        header("Location: index.php"); // ⬅️ Dit au navigateur "va vers index.php"
-        exit;                          // ⬅️ STOP — PHP s'arrête là                          
+        header("Location: index.php");
+        exit;                         
     } else {
         $_SESSION['old_titre']    = $_POST['titre'];
         $_SESSION['old_contenu']  = $_POST['contenu'];
